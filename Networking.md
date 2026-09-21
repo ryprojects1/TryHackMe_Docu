@@ -235,3 +235,11 @@ We didn’t need to provide any password
 Issuing ls returned a list of files available for download
 type ascii switched to ASCII mode as this is a text file
 get coffee.txt allowed us to retrieve the file we want
+
+Let’s present some of the commands used by your mail client when it transfers an email to an SMTP server:
+
+HELO or EHLO initiates an SMTP session
+MAIL FROM specifies the sender’s email address
+RCPT TO specifies the recipient’s email address
+DATA indicates that the client will begin sending the content of the email message
+. is sent on a line by itself to indicate the end of the email message
