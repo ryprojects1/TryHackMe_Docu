@@ -199,3 +199,21 @@ MX Record: The MX (Mail Exchange) record specifies the mail server responsible f
 
 , we have used the whois command to look up a domain whose WHOIS record is protected by privacy protection.
 
+user@TryHackMe$ whois [REDACTED].com
+[...]
+Domain Name: [REDACTED].COM
+Registry Domain ID: [REDACTED]
+Registrar WHOIS Server: whois.godaddy.com
+Registrar URL: https://www.godaddy.com
+Updated Date: 2017-07-05T16:02:43Z
+Creation Date: 1993-04-02T00:00:00Z
+Registrar Registration Expiration Date: 2026-10-20T14:56:17Z
+Registrar: GoDaddy.com, LLC
+Registrar IANA ID: 146
+Registrar Abuse Contact Email: abuse@godaddy.com
+Registrar Abuse Contact Phone: +1.4806242505
+[...]
+Registrant Name: Registration Private
+Registrant Organization: Domains By Proxy, LLC
+Registrant Street: DomainsByProxy.com
+[...]
