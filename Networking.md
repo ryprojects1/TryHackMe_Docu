@@ -230,37 +230,71 @@ FTP server listens on TCP port 21 by default; data transfer is conducted via ano
 
 In the terminal below we executed the command ftp 10.129.166.175 to connect to the remote FTP server using the local ftp client. Then we went through the following steps:
 
-We used the username anonymous to log in
-We didn’t need to provide any password
-Issuing ls returned a list of files available for download
-type ascii switched to ASCII mode as this is a text file
-get coffee.txt allowed us to retrieve the file we want
+# Networking Core Protocols
 
-Let’s present some of the commands used by your mail client when it transfers an email to an SMTP server:
+## DNS Records
+- **A Record** — Hostname → IPv4 address
+- **AAAA Record** — Hostname → IPv6 address
+- **CNAME Record** — Domain → another domain
+- **MX Record** — Specifies mail server for a domain
 
-HELO or EHLO initiates an SMTP session
-MAIL FROM specifies the sender’s email address
-RCPT TO specifies the recipient’s email address
-DATA indicates that the client will begin sending the content of the email message
-. is sent on a line by itself to indicate the end of the email message
+## WHOIS
+Lookup domain registration info. Privacy protection replaces owner details with a proxy service.
+```bash
+whois example.com
+```
 
-Some common POP3 commands are:
+## FTP — Port 21
+Designed for file transfer. Uses two connections: port 21 (control) + dynamic port (data).
 
-USER <username> identifies the user
-PASS <password> provides the user’s password
-STAT requests the number of messages and total size
-LIST lists all messages and their sizes
-RETR <message_number> retrieves the specified message
-DELE <message_number> marks a message for deletion
-QUIT ends the POP3 session applying changes, such as deletions
+| Command | Description |
+|---------|-------------|
+| `USER` / `PASS` | Login credentials |
+| `RETR` | Download file |
+| `STOR` | Upload file |
+| `get <file>` | Retrieve file |
 
-IMAP allows synchronizing read, moved, and deleted messages. IMAP is quite convenient when you check your email via multiple clients. Unlike POP3, which tends to minimize server storage as email is downloaded and deleted from the remote server, IMAP tends to use more storage as email is kept on the server and synchronized across the email clients.
+Anonymous login: username `anonymous`, no password required.  
+⚠️ Plaintext protocol — use SFTP/FTPS for secure transfer.
 
-The IMAP protocol commands are more complicated than the POP3 protocol commands. We list a few examples below:
+## SMTP — Sending Email
+| Command | Description |
+|---------|-------------|
+| `EHLO` | Start session |
+| `MAIL FROM` | Sender address |
+| `RCPT TO` | Recipient address |
+| `DATA` | Begin message content |
+| `.` | End of message |
 
-LOGIN <username> <password> authenticates the user
-SELECT <mailbox> selects the mailbox folder to work with
-FETCH <mail_number> <data_item_name> Example fetch 3 body[] to fetch message number 3, header and body.
-MOVE <sequence_set> <mailbox> moves the specified messages to another mailbox
-COPY <sequence_set> <data_item_name> copies the specified messages to another mailbox
-LOGOUT logs out
+## POP3 — Receiving Email (downloads & deletes from server)
+| Command | Description |
+|---------|-------------|
+| `USER` / `PASS` | Authenticate |
+| `LIST` | List messages |
+| `RETR <n>` | Get message |
+| `DELE <n>` | Delete message |
+| `QUIT` | End session |
+
+## IMAP — Receiving Email (syncs across devices)
+| Command | Description |
+|---------|-------------|
+| `LOGIN` | Authenticate |
+| `SELECT <mailbox>` | Open folder |
+| `FETCH <n> body[]` | Get message |
+| `MOVE` / `COPY` | Move or copy messages |
+| `LOGOUT` | End session |
+
+## POP3 vs IMAP
+| | POP3 | IMAP |
+|--|------|------|
+| Storage | Local | Server |
+| Multi-device | ❌ | ✅ |
+| Sync | ❌ | ✅ |
+
+## Secure Alternatives
+| Protocol | Secure Version | Port |
+|----------|---------------|------|
+| FTP | SFTP/FTPS | 22/990 |
+| SMTP | SMTP+TLS | 587 |
+| POP3 | POP3S | 995 |
+| IMAP | IMAPS | 993 |
