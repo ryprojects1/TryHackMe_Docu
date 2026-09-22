@@ -299,44 +299,138 @@ Anonymous login: username `anonymous`, no password required.
 | POP3 | POP3S | 995 |
 | IMAP | IMAPS | 993 |
 
-#Networking Secure Protocols 
-Like SSL, its predecessor, TLS is a cryptographic protocol operating at the OSI model’s transport layer. It allows secure communication between a client and a server over an insecure network. By secure, we refer to confidentiality and integrity; TLS ensures that no one can read or modify the exchanged data. Please take a minute to think about what it would be like to do online shopping, online banking, or even online messaging and email without being able to guarantee the confidentiality and integrity of the network packets. Without TLS, we would be unable to use the Internet for many applications that are now part of our daily routine.
+# Secure Network Protocols: TLS, SSH & VPN
 
-Nowadays, tens of protocols have received security upgrades with the simple addition of TLS. Examples include HTTP, DNS, MQTT, and SIP, which have become HTTPS, DoT (DNS over TLS), MQTTS, and SIPS, where the appended “S” stands for Secure due to the use of SSL/TLS. In the following tasks, we will visit HTTPS, SMTPS, POP3S, and IMAPS.
+Three main approaches to securing network traffic over insecure networks.
 
-The first step for every server (or client) that needs to identify itself is to get a signed TLS certificate. Generally, the server administrator creates a Certificate Signing Request (CSR) and submits it to a Certificate Authority (CA); the CA verifies the CSR and issues a digital certificate. Once the (signed) certificate is received, it can be used to identify the server (or the client) to others, who can confirm the validity of the signature. For a host to confirm the validity of a signed certificate, the certificates of the signing authorities need to be installed on the host. In the non-digital world, this is similar to recognising the stamps of various authorities. The screenshot below shows the trusted authorities installed in a web browser.
+---
 
-HTTP
-HTTPS stands for Hypertext Transfer Protocol Secure. It is basically HTTP over TLS. Consequently, requesting a page over HTTPS will require the following three steps (after resolving the domain name):
+## TLS/SSL (Transport Layer Security)
 
-Establish a TCP three-way handshake with the target server
-Establish a TLS session
-Communicate using the HTTP protocol; for example, issue HTTP requests, such as GET / HTTP/1.1
+**What it is:** Cryptographic protocol at OSI transport layer that encrypts communication between client and server.
 
-We have used the TELNET protocol in the Networking Concepts room. Although it is very convenient to log in and administer remote systems, it is risky when all the traffic is sent in cleartext. It is easy for anyone monitoring the network traffic to get hold of your login credentials once you use telnet. This problem necessitated a solution. Tatu Ylönen developed the Secure Shell (SSH) protocol and released SSH-1 in 1995 as freeware. (Interestingly, it was the same year that Netscape Communications released the SSL 2.0 protocol.) A more secure version, SSH-2, was defined in 1996. In 1999, the OpenBSD developers released OpenSSH, an open-source implementation of SSH. Nowadays, when you use an SSH client, it is most likely based on OpenSSH libraries and source code.
+**Why it matters:** Ensures confidentiality (can't read) and integrity (can't modify) of network packets.
 
-OpenSSH offers several benefits. We will list a few key points:
+**How it works:**
+1. Server gets signed TLS certificate from Certificate Authority (CA)
+2. Certificate proves server identity
+3. Browser verifies certificate using trusted CAs
+4. Secure connection established
 
-Secure authentication: Besides password-based authentication, SSH supports public key and two-factor authentication.
-Confidentiality: OpenSSH provides end-to-end encryption, protecting against eavesdropping. Furthermore, it notifies you of new server keys to protect against man-in-the-middle attacks.
-Integrity: In addition to protecting the confidentiality of the exchanged data, cryptography also protects the integrity of the traffic.
-Tunneling: SSH can create a secure “tunnel” to route other protocols through SSH. This setup leads to a VPN-like connection.
-X11 Forwarding: If you connect to a Unix-like system with a graphical user interface, SSH allows you to use the graphical application over the network.
+### Secured Protocols (Adding "S")
 
-When the Internet was designed, the TCP/IP protocol suite focused on delivering packets. For example, if a router gets out of service, the routing protocols can adapt and pick a different route to send their packets. If a packet was not acknowledged, TCP has built-in mechanisms to detect this situation and resend. However, no mechanisms are in place to ensure that all data leaving or entering a computer is protected from disclosure and alteration. A popular solution was the setup of a VPN connection. The focus here is on the P for Private in VPN.
+Protocols that added TLS security:
+- HTTP → **HTTPS**
+- DNS → **DoT** (DNS over TLS)
+- SMTP → **SMTPS**
+- POP3 → **POP3S**
+- MQTT → **MQTTS**
 
-Almost all companies require “private” information exchange in their virtual network. So, a VPN provides a very convenient and relatively inexpensive solution. The main requirements are Internet connectivity and a VPN server and client.
+The "S" stands for Secure.
 
-The network diagram below shows an example of a company with two remote branches connecting to the main branch. A VPN client in the remote branches is expected to connect to the VPN server in the main branch. In this case, the VPN client will encrypt the traffic and pass it to the main branch via the established VPN tunnel (shown in blue). The VPN traffic is limited to the blue lines; the green lines would carry the decrypted VPN traffic.
+### HTTPS Connection Steps
 
-Once a VPN tunnel is established, all our Internet traffic will usually be routed over the VPN connection, i.e. via the VPN tunnel. Consequently, when we try to access an Internet service or web application, they will not see our public IP address but the VPN server’s. This is why some Internet users connect over VPN to circumvent geographical restrictions. Furthermore, the local ISP will only see encrypted traffic, which limits its ability to censor Internet access.
+After DNS resolution:
+1. TCP three-way handshake
+2. Establish TLS session
+3. Communicate via HTTP (GET, POST, etc.)
 
-In other words, if a user connects to a VPN server in Japan, they will appear to the servers they access as if located in Japan. These servers will customise their experience accordingly, such as redirecting them to the Japanese version of the service. The screenshot below shows the Google Search page after connecting to a VPN server in Japan.
+---
 
-In this room, we covered three main approaches to secure network traffic.
+## SSH (Secure Shell)
 
-The first approach is to use TLS, which provides a convenient way to secure many protocols, such as HTTP, SMTP, and POP3. Protocols secured with TLS usually get an S, for Secure, added to their names, such as HTTPS, SMTPS, and POP3S.
+**History:**
+- Created by Tatu Ylönen (1995) to replace Telnet
+- SSH-2 defined in 1996
+- OpenSSH released by OpenBSD (1999) - now industry standard
 
-The second approach to secure network traffic is to use SSH. Although SSH is mainly used for remote access, it can also transfer files securely and establish secure tunnels. Creating an SSH tunnel is a solid choice if you want to pass the traffic of a plaintext protocol, such as VNC.
+**Why replace Telnet?** Telnet sends everything in plaintext (including passwords). SSH encrypts everything.
 
-The last approach we covered to secure network traffic is using VPN connections. A VPN connection is usually the perfect option for connecting two company branches.
+### Key Benefits
+
+✅ **Secure Authentication**
+- Password-based
+- Public key authentication
+- Two-factor authentication
+
+✅ **Confidentiality**
+- End-to-end encryption
+- Protection against eavesdropping
+- Alerts on new/suspicious server keys
+
+✅ **Integrity**
+- Cryptography protects data integrity
+- Detects tampering
+
+✅ **Tunneling**
+- Create secure tunnels for other protocols
+- VPN-like connections
+- Useful for plaintext protocols (like VNC)
+
+✅ **X11 Forwarding**
+- Use graphical apps remotely over SSH
+
+---
+
+## VPN (Virtual Private Network)
+
+**What it is:** Encrypted tunnel connecting remote locations over the Internet while keeping data "private."
+
+**Why it matters:** TCP/IP designed for routing, not security. VPN adds the security layer.
+
+**How it works:**
+
+```
+Remote Branch         Main Branch
+   VPN Client  =======(encrypted tunnel)=======> VPN Server
+```
+
+- Client encrypts traffic before sending
+- All traffic goes through encrypted tunnel
+- VPN server decrypts and forwards to real destination
+- ISP only sees encrypted data (can't censor or inspect)
+- Original public IP hidden from services (they see VPN server's IP)
+
+### Common Uses
+
+✅ **Company networks** - Connect remote branches securely
+✅ **Geographic spoofing** - Appear to be in different location (like connecting via Japan VPN)
+✅ **Bypassing restrictions** - ISP can't see/block encrypted traffic
+✅ **Privacy** - Services see VPN server IP, not your real IP
+
+---
+
+## Comparison: Which One to Use?
+
+| Approach | Best For | Pros | Cons |
+|----------|----------|------|------|
+| **TLS** | Single protocol security | Simple, widely supported | Per-protocol setup |
+| **SSH** | Remote access & tunneling | Flexible, multi-auth options | Mainly for terminal |
+| **VPN** | Entire network privacy | All traffic encrypted, easy setup | Requires VPN server |
+
+---
+
+## Real-World Scenario
+
+**Insecure (Old Way):**
+- Telnet login → password sent plaintext → anyone sniffing network sees it ❌
+
+**Secure (Modern Way):**
+- SSH login → encrypted connection → password protected ✅
+- HTTPS browsing → encrypted connection → data private ✅
+- VPN tunnel → all traffic encrypted → ISP can't see what you're doing ✅
+
+---
+
+## TLS Certificates Deep Dive
+
+**How it works:**
+1. Server admin creates Certificate Signing Request (CSR)
+2. Submits to Certificate Authority (CA) for verification
+3. CA issues digitally signed certificate
+4. Server uses certificate to prove identity
+5. Client verifies certificate using trusted CAs (like browser's CA store)
+
+Think of it like passport stamps - the CA's signature proves authenticity.
+
+
