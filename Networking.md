@@ -312,3 +312,13 @@ HTTPS stands for Hypertext Transfer Protocol Secure. It is basically HTTP over T
 Establish a TCP three-way handshake with the target server
 Establish a TLS session
 Communicate using the HTTP protocol; for example, issue HTTP requests, such as GET / HTTP/1.1
+
+We have used the TELNET protocol in the Networking Concepts room. Although it is very convenient to log in and administer remote systems, it is risky when all the traffic is sent in cleartext. It is easy for anyone monitoring the network traffic to get hold of your login credentials once you use telnet. This problem necessitated a solution. Tatu Ylönen developed the Secure Shell (SSH) protocol and released SSH-1 in 1995 as freeware. (Interestingly, it was the same year that Netscape Communications released the SSL 2.0 protocol.) A more secure version, SSH-2, was defined in 1996. In 1999, the OpenBSD developers released OpenSSH, an open-source implementation of SSH. Nowadays, when you use an SSH client, it is most likely based on OpenSSH libraries and source code.
+
+OpenSSH offers several benefits. We will list a few key points:
+
+Secure authentication: Besides password-based authentication, SSH supports public key and two-factor authentication.
+Confidentiality: OpenSSH provides end-to-end encryption, protecting against eavesdropping. Furthermore, it notifies you of new server keys to protect against man-in-the-middle attacks.
+Integrity: In addition to protecting the confidentiality of the exchanged data, cryptography also protects the integrity of the traffic.
+Tunneling: SSH can create a secure “tunnel” to route other protocols through SSH. This setup leads to a VPN-like connection.
+X11 Forwarding: If you connect to a Unix-like system with a graphical user interface, SSH allows you to use the graphical application over the network.
