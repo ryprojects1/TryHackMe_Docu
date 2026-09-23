@@ -434,4 +434,34 @@ Remote Branch         Main Branch
 Think of it like passport stamps - the CA's signature proves authenticity.
 
 #Wireshark: The Basics
+Wireshark is an open-source, cross-platform network packet analyser tool capable of sniffing and investigating live traffic and inspecting packet captures (PCAP). It is commonly used as one of the best packet analysis tools. In this room, we will look at the basics of Wireshark and use it to perform fundamental packet analysis.
+Wireshark is one of the most potent traffic analyser tools available in the wild. There are multiple purposes for its use:
+
+Detecting and troubleshooting network problems, such as network load failure points and congestion.
+Detecting security anomalies, such as rogue hosts, abnormal port usage, and suspicious traffic.
+Investigating and learning protocol details, such as response codes and payload data.
+Wireshark is one of the most potent traffic analyser tools available in the wild. There are multiple purposes for its use:
+
+Toolbar	The main toolbar contains multiple menus and shortcuts for packet sniffing and processing, including filtering, sorting, summarising, exporting and merging. 
+Display Filter Bar	The main query and filtering section.
+Recent Files	List of the recently investigated files. You can recall listed files with a double-click. 
+Capture Filter and Interfaces	Capture filters and available sniffing points (network interfaces).  The network interface is the connection point between a computer and a network. The software connection (e.g., lo, eth0 and ens33) enables networking hardware.
+Status Bar	Tool status, profile and numeric packet information.
+
+Packet List Pane	Summary of each packet (source and destination addresses, protocol, and packet info). You can click on the list to choose a packet for further investigation. Once you select a packet, the details will appear in the other panels.
+Packet Details Panel	Detailed protocol breakdown of the selected packet.
+Packet Bytes Pane	Hex and decoded ASCII representation of the selected packet. It highlights the packet field depending on the clicked section in the details pane.
+
+Packet Dissection
+Packet dissection is also known as protocol dissection, which investigates packet details by decoding available protocols and fields. Wireshark supports a long list of protocols for dissection, and you can also write your dissection scripts. You can find more details on dissection
+
+Go to Packet
+Packet numbers do not only help to count the total number of packets or make it easier to find/investigate specific packets. This feature not only navigates between packets up and down; it also provides in-frame packet tracking and finds the next packet in the particular part of the conversation. You can use the "Go" menu and toolbar to view specific packets.
+
+Find Packets
+Apart from packet number, Wireshark can find packets by packet content. You can use the "Edit --> Find Packet" menu to make a search inside the packets for a particular event of interest. This helps analysts and administrators to find specific intrusion patterns or failure traces.
+
+There are two crucial points in finding packets. The first is knowing the input type. This functionality accepts four types of inputs (Display filter, Hex, String and Regex). String and regex searches are the most commonly used search types. Searches are case insensitive, but you can set the case sensitivity in your search by clicking the radio button.
+
+The second point is choosing the search field. You can conduct searches in the three panes (packet list, packet details, and packet bytes), and it is important to know the available information in each pane to find the event of interest. For example, if you try to find the information available in the packet details pane and conduct the search in the packet list pane, Wireshark won't find it even if it exists.
 
