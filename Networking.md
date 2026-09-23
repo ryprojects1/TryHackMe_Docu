@@ -432,26 +432,115 @@ Remote Branch         Main Branch
 5. Client verifies certificate using trusted CAs (like browser's CA store)
 
 Think of it like passport stamps - the CA's signature proves authenticity.
+# Wireshark: The Basics
 
-Packet Dissection
-Packet dissection is also known as protocol dissection, which investigates packet details by decoding available protocols and fields. Wireshark supports a long list of protocols for dissection, and you can also write your dissection scripts. You can find more details on dissection
+Wireshark is an open-source, cross-platform network packet analyser. It sniffs live traffic and inspects packet captures (PCAP files), making it one of the best tools for understanding what's actually moving across your network.
 
-Go to Packet
-Packet numbers do not only help to count the total number of packets or make it easier to find/investigate specific packets. This feature not only navigates between packets up and down; it also provides in-frame packet tracking and finds the next packet in the particular part of the conversation. You can use the "Go" menu and toolbar to view specific packets.
+## Why Wireshark Matters
 
-Find Packets
-Apart from packet number, Wireshark can find packets by packet content. You can use the "Edit --> Find Packet" menu to make a search inside the packets for a particular event of interest. This helps analysts and administrators to find specific intrusion patterns or failure traces.
+**Network Troubleshooting**
+- Find where traffic is breaking or slowing down
+- Spot congestion and load issues
 
-There are two crucial points in finding packets. The first is knowing the input type. This functionality accepts four types of inputs (Display filter, Hex, String and Regex). String and regex searches are the most commonly used search types. Searches are case insensitive, but you can set the case sensitivity in your search by clicking the radio button.
+**Security Analysis**
+- Detect rogue hosts and suspicious activity
+- Catch abnormal port usage
+- Identify intrusion patterns
 
-The second point is choosing the search field. You can conduct searches in the three panes (packet list, packet details, and packet bytes), and it is important to know the available information in each pane to find the event of interest. For example, if you try to find the information available in the packet details pane and conduct the search in the packet list pane, Wireshark won't find it even if it exists.
+**Protocol Learning**
+- See exactly how protocols work
+- Inspect response codes, payloads, headers
+- Understand the packets you're blocking with your firewall
 
-Packet Filtering
-Wireshark has a powerful filter engine that helps analysts to narrow down the traffic and focus on the event of interest. Wireshark has two types of filtering approaches: capture and display filters. Capture filters are used for "capturing" only the packets valid for the used filter. Display filters are used for "viewing" the packets valid for the used filter. We will discuss these filters' differences and advanced usage in the next room. Now let's focus on basic usage of the display filters, which will help analysts in the first place.
+## The Interface
 
-Filters are specific queries designed for protocols available in Wireshark's official protocol reference. While the filters are only the option to investigate the event of interest, there are two different ways to filter traffic and remove the noise from the capture file. The first one uses queries, and the second uses the right-click menu. Wireshark provides a powerful GUI, and there is a golden rule for analysts who don't want to write queries for basic tasks: "If you can click on it, you can filter and copy it"
+### Toolbar
+Main menu and shortcuts. Use this for packet capture, filtering, sorting, exporting.
 
-Apply as Filter
-This is the most basic way of filtering traffic. While investigating a capture file, you can click on the field you want to filter and use the "right-click menu" or "Analyse --> Apply as Filter" menu to filter the specific value. Note that the number of total and displayed packets are always shown on the status bar.
+### Display Filter Bar
+Where you write queries to filter packets. This is your power tool.
 
+### Capture Filter & Interfaces
+Choose which network interface to sniff on (eth0, ens33, lo, etc). Capture filters decide what gets recorded.
 
+### Packet List Pane
+Summary view — shows source/destination, protocol, and basic packet info. Click a packet to dive deeper.
+
+### Packet Details Panel
+Protocol breakdown. Shows exactly what's in each layer (TCP, IP, HTTP, etc).
+
+### Packet Bytes Pane
+Raw hex and ASCII. The ground truth of what's in the packet.
+
+### Status Bar
+Shows total packets, displayed packets, profile info.
+
+## Packet Dissection
+
+**What it is:** Breaking down a packet to see all its layers and fields.
+
+Wireshark supports hundreds of protocols. It automatically decodes them so you don't have to read raw hex. You can also write custom dissection scripts.
+
+## Finding Packets
+
+### By Packet Number
+Use "Go → Go to Packet" to jump to a specific packet number. Useful for frame tracking and following conversations.
+
+### By Content
+"Edit → Find Packet" searches inside packets for specific patterns.
+
+**Search types:**
+- **String** — Search for text (case-insensitive by default)
+- **Regex** — Pattern matching (for complex searches)
+- **Hex** — Raw bytes
+- **Display Filter** — Use Wireshark's query language
+
+**Pro tip:** Know which pane has the info you're looking for. Searching packet details in the packet list pane won't work.
+
+## Filtering: The Golden Rule
+
+**"If you can click on it, you can filter on it."**
+
+Wireshark has two filter types:
+
+### Capture Filters
+Applied during capture. Only saves packets matching the filter. Efficient but you lose data outside the filter.
+
+### Display Filters
+Applied after capture. Shows/hides packets without deleting them. This is what you'll use most.
+
+## Filtering Workflows
+
+### Right-Click Method (Easiest)
+1. Click a field in the packet details
+2. Right-click → "Apply as Filter"
+3. Boom. Filtered.
+
+### Menu Method
+Click a field → "Analyse → Apply as Filter"
+
+### Manual Queries
+Type directly in the Display Filter bar.
+
+**Examples:**
+```
+ip.src == 192.168.1.100          # Traffic from specific IP
+tcp.port == 22                   # SSH traffic
+http.request.method == "POST"    # HTTP POST requests
+dns.qry.name contains "google"   # DNS queries for google
+```
+
+## Quick Wins
+
+**Isolate one conversation:**
+- Right-click a packet → Follow → TCP Stream (or UDP/HTTP)
+- Shows you only packets in that connection
+
+**Export packets:**
+- File → Export → Choose format (CSV, JSON, etc)
+- Good for reports or feeding into other tools
+
+**Colorize traffic:**
+- View → Coloring Rules
+- Red for suspicious, green for known-good
+- Makes patterns jump out
