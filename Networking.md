@@ -545,250 +545,309 @@ dns.qry.name contains "google"   # DNS queries for google
 - Red for suspicious, green for known-good
 - Makes patterns jump out
 
-#Tcpdump: The Basics
-This room introduces some basic command-line arguments for using Tcpdump. The Tcpdump tool and its libpcap library are written in C and C++ and were released for Unix-like systems in the late 1980s or early 1990s. Consequently, they are very stable and offer optimal speed. The libpcap library is the foundation for various other networking tools today. Moreover, it was ported to MS Windows as winpcap.
-Specify the Network Interface
-The first thing to decide is which network interface to listen to using -i INTERFACE. You can choose to listen on all available interfaces using -i any; alternatively, you can specify an interface you want to listen on, such as -i eth0.
+# Tcpdump: The Basics
 
-A command such as ip address show (or merely ip a s) would list the available network interfaces. In the terminal below, we see one network card, ens5, in addition to the loopback address.
+Tcpdump is a command-line packet capture and analysis tool. It's lightweight, blazingly fast, and the foundation for Wireshark and most other network analysis tools. Written in C/C++ and released in the late 1980s for Unix systems, it's battle-tested and stable.
 
+Why learn tcpdump when you have Wireshark? Because tcpdump runs on servers without GUIs, on remote systems over SSH, and in scripts. Wireshark is the GUI; tcpdump is the engine.
 
-Save the Captured Packets
-In many cases, you should check the captured packets again later. This can be achieved by saving to a file using -w FILE. The file extension is most commonly set to .pcap. The saved packets can be inspected later using another program, such as Wireshark. You won’t see the packets scrolling when you choose the -w option.
+## Why You Need Tcpdump
 
-Read Captured Packets from a File
-You can use Tcpdump to read packets from a file by using -r FILE. This is very useful for learning about protocol behaviour. You can capture network traffic over a suitable time frame to inspect a specific protocol, then read the captured file while applying filters to display the packets you are interested in. Furthermore, it might be a packet capture file that contains a network attack that took place, and you inspect it to analyze the attack.
+**On your homelab:**
+- Monitor traffic in real-time from the command line
+- Capture packets to a file for later analysis in Wireshark
+- Write complex filters to isolate exactly the traffic you care about
+- Automate packet capture in scripts
 
-Limit the Number of Captured Packets
-You can specify the number of packets to capture by specifying the count using -c COUNT. Without specifying a count, the packet capture will continue till you interrupt it, for example, by pressing CTRL-C. Depending on your goal, you only need a limited number of packets.
+**In penetration testing / incident response:**
+- Capture live traffic on remote systems
+- Hunt for intrusion signatures
+- Analyze network attacks as they happen
+- Build packet captures for forensics
 
-Command	Explanation
-tcpdump -i INTERFACE	Captures packets on a specific network interface
-tcpdump -w FILE	Writes captured packets to a file
-tcpdump -r FILE	Reads captured packets from a file
-tcpdump -c COUNT	Captures a specific number of packets
-tcpdump -n	Don’t resolve IP addresses
-tcpdump -nn	Don’t resolve IP addresses and don’t resolve protocol numbers
-tcpdump -v	Verbose display; verbosity can be increased with -vv and -vvv
+## Choosing a Network Interface
 
-Filtering by Host
-Let’s say you are only interested in IP packets exchanged with your network printer or a specific game server. You can easily limit the captured packets to this host using host IP or host HOSTNAME. In the terminal below, we capture all the packets exchanged with example.com and save them to http.pcap. It is important to note that capturing packets requires you to be logged-in as root or to use sudo.
+Every packet capture starts with picking which network interface to listen on.
 
+```bash
+# List available interfaces
+ip address show
+# or
+ifconfig
+```
 
-Terminal
-user@TryHackMe$ sudo tcpdump host example.com -w http.pcap
-tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-16:49:02.482295 IP 192.168.139.132.49480 > 93.184.215.14.http: Flags [S], seq 3330895816, win 32120, options [mss 1460,sackOK,TS val 621343956 ecr 0,nop,wscale 7], length 0
-16:49:02.635087 IP 93.184.215.14.http > 192.168.139.132.49480: Flags [S.], seq 2231582859, ack 3330895817, win 64240, options [mss 1460], length 0
-16:49:02.635125 IP 192.168.139.132.49480 > 93.184.215.14.http: Flags [.], ack 1, win 32120, length 0
-16:49:02.635491 IP 192.168.139.132.49480 > 93.184.215.14.http: Flags [P.], seq 1:131, ack 1, win 32120, length 130: HTTP: GET / HTTP/1.1
-16:49:02.635580 IP 93.184.215.14.http > 192.168.139.132.49480: Flags [.], ack 131, win 64240, length 0
-[...]
-^C
-13 packets captured
-25 packets received by filter
-0 packets dropped by kernel
-If you want to limit the packets to those from a particular source IP address or hostname, you must use src host IP or src host HOSTNAME. Similarly, you can limit packets to those sent to a specific destination using dst host IP or dst host HOSTNAME.
+Common interface names:
+- `eth0`, `ens33` — Ethernet
+- `wlan0` — WiFi
+- `lo` — Loopback (localhost traffic)
+- `any` — All interfaces (handy but slower)
 
-Filtering by Port
-If you want to capture all DNS traffic, you can limit the captured packets to those on port 53. Remember that DNS uses UDP and TCP ports 53 by default. In the following example, we can see all the DNS queries read by our network card. The terminal below shows two DNS queries: the first query requests the IPv4 address used by example.org, while the second requests the IPv6 address associated with example.org.
+**Capture on a specific interface:**
+```bash
+sudo tcpdump -i eth0
+```
 
+**Capture on all interfaces:**
+```bash
+sudo tcpdump -i any
+```
 
-Terminal
-user@TryHackMe$ sudo tcpdump -i ens5 port 53 -n
-[sudo] password for strategos: 
-tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-17:26:33.591670 IP 192.168.139.132.47902 > 192.168.139.2.53: 47108+ A? example.org. (29)
-17:26:33.591717 IP 192.168.139.132.47902 > 192.168.139.2.53: 5+ AAAA? example.org. (29)
-17:26:33.593324 IP 192.168.139.2.53 > 192.168.139.132.47902: 47108 1/0/0 A 93.184.215.14 (45)
-17:26:33.593325 IP 192.168.139.2.53 > 192.168.139.132.47902: 5 1/0/0 AAAA 2606:2800:21f:cb07:6820:80da:af6b:8b2c (57)
-[...]
-^C
-12 packets captured
-12 packets received by filter
-0 packets dropped by kernel
-In the above example, we captured all the packets sent to or from a specific port number. You can limit the packets to those from a particular source port number or to a particular destination port number using src port PORT_NUMBER and dst port PORT_NUMBER, respectively.
+**Why sudo?** Packet capture requires root privileges. You're reading raw network data.
 
-Filtering by Protocol
-The final type of filtering we will cover is filtering by protocol. You can limit your packet capture to a specific protocol; examples include: ip, ip6, udp, tcp, and icmp. In the example below, we limit our packet capture to ICMP packets. We can see an ICMP echo request and reply, which is a possible indication that someone is running the ping command. There is also an ICMP time exceeded; this might be due to running the traceroute command (as explained in the Networking Essentials room).
+## Saving and Reading Packets
 
+### Capture to a File
 
-Terminal
-user@TryHackMe$ sudo tcpdump -i ens5 icmp -n
-tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-18:11:00.624681 IP 192.168.139.132 > 93.184.215.14: ICMP echo request, id 47038, seq 1, length 64
-18:11:00.781482 IP 93.184.215.14 > 192.168.139.132: ICMP echo reply, id 47038, seq 1, length 64
-18:11:04.168792 IP 192.168.139.2 > 192.168.139.132: ICMP time exceeded in-transit, length 68
-18:11:04.168815 IP 192.168.139.2 > 192.168.139.132: ICMP time exceeded in-transit, length 68
-[...]
-18:11:14.857188 IP 93.184.215.14 > 192.168.139.132: ICMP 93.184.215.14 udp port 33495 unreachable, length 68
-^C
-52 packets captured
-52 packets received by filter
-0 packets dropped by kernel
-Command	Explanation
-tcpdump host IP or tcpdump host HOSTNAME	Filters packets by IP address or hostname
-tcpdump src host IP or	Filters packets by a specific source host
-tcpdump dst host IP	Filters packets by a specific destination host
-tcpdump port PORT_NUMBER	Filters packets by port number
-tcpdump src port PORT_NUMBER	Filters packets by the specified source port number
-tcpdump dst port PORT_NUMBER	Filters packets by the specified destination port number
-tcpdump PROTOCOL	Filters packets by protocol; examples include ip, ip6, and icmp
+```bash
+sudo tcpdump -i eth0 -w capture.pcap
+```
 
-There are many more ways to filter packets. After all, in any real-life situation, we would need to filter through thousands or even millions of packets. It is indispensable to be able to express the exact packets to display. For example, we can limit the displayed packets to those smaller or larger than a certain length:
+This saves packets to `capture.pcap` without printing anything to screen. You won't see the traffic scrolling — it's all going to the file. Perfect for long captures or when you want to analyze later in Wireshark.
 
-greater LENGTH: Filters packets that have a length greater than or equal to the specified length
-less LENGTH: Filters packets that have a length less than or equal to the specified length
-We recommend you check the pcap-filter manual page by issuing the command man pcap-filter; however, for the purposes of this room, we will focus on one advanced option that allows you to filter packets based on the TCP flags. Understanding the TCP flags will make it easy to build on this knowledge and master more advanced filtering techniques.
+### Read from a File
 
-Binary Operations
-Before proceeding, it is worth visiting binary operations. A binary operation works on bits, i.e., zeroes and ones. An operation takes one or two bits and returns one bit. Let’s explain in more depth and consider the following three binary operations: &, |, and !.
+```bash
+tcpdump -r capture.pcap
+```
 
-& (And) takes two bits and returns 0 unless both inputs are 1, as shown in the table below.
+This reads a saved file and prints packets to stdout. Useful for:
+- Inspecting old captures
+- Applying filters to a file you already have
+- Learning how protocols work offline
 
-Input 1	Input 2	Input1 & Input 2
-0	0	0
-0	1	0
-1	0	0
-1	1	1
-| (Or) takes two bits and returns 1 unless both inputs are 0. This is shown in the table below.
+## Limiting Packet Count
 
-Input 1	Input 2	Input 1 | Input 2
-0	0	0
-0	1	1
-1	0	1
-1	1	1
-! (Not) takes one bit and inverts it; an input of 1 gives 0, and an input of 0 gives 1, as shown in the table below.
+By default, tcpdump captures forever until you press Ctrl+C. You can limit it:
 
-Input 1	! Input 1
-0	1
-1	0
-Header Bytes
-The purpose of this section is to be able to filter packets based on the contents of a header byte. Consider the following protocols: ARP, Ethernet, ICMP, IP, TCP, and UDP. These are just a few networking protocols we have studied. How can we tell Tcpdump to filter packets based on the contents of protocol header bytes? (We will not go into details about the headers of each protocol as this is beyond the scope of this room; instead, we will focus on TCP flags.)
+```bash
+# Capture exactly 100 packets, then stop
+sudo tcpdump -i eth0 -c 100
+```
 
-Using pcap-filter, Tcpdump allows you to refer to the contents of any byte in the header using the following syntax proto[expr:size], where:
+Great for quick tests where you know roughly how much data you need.
 
-proto refers to the protocol. For example, arp, ether, icmp, ip, ip6, tcp, and udp refer to ARP, Ethernet, ICMP, IPv4, IPv6, TCP, and UDP respectively.
-expr indicates the byte offset, where 0 refers to the first byte.
-size indicates the number of bytes that interest us, which can be one, two, or four. It is optional and is one by default.
-To better understand this, consider the following two examples from the pcap-filter manual page (and don’t worry if you find them difficult):
+## Output Control
 
-ether[0] & 1 != 0 takes the first byte in the Ethernet header and the decimal number 1 (i.e., 0000 0001 in binary) and applies the & (the And binary operation). It will return true if the result is not equal to the number 0 (i.e., 0000 0000). The purpose of this filter is to show packets sent to a multicast address. A multicast Ethernet address is a particular address that identifies a group of devices intended to receive the same data.
-ip[0] & 0xf != 5 takes the first byte in the IP header and compares it with the hexadecimal number F (i.e., 0000 1111 in binary). It will return true if the result is not equal to the (decimal) number 5 (i.e., 0000 0101 in binary). The purpose of this filter is to catch all IP packets with options.
-Don’t worry if you find the above two examples complex. We included them so you know what you can achieve with this; however, fully understanding the above examples is not necessary to finish this task. Instead, we will focus on filtering TCP packets based on the set TCP flags.
+Tcpdump can be verbose or quiet. Control it with flags:
 
-You can use tcp[tcpflags] to refer to the TCP flags field. The following TCP flags are available to compare with:
+```bash
+tcpdump -q           # Quiet: source, dest, protocol only
+tcpdump -v           # Verbose: more detail
+tcpdump -vv          # Very verbose
+tcpdump -vvv         # Extremely verbose
+tcpdump -n           # Don't resolve IP addresses to hostnames
+tcpdump -nn          # Don't resolve IPs or port numbers
+```
 
-tcp-syn TCP SYN (Synchronize)
-tcp-ack TCP ACK (Acknowledge)
-tcp-fin TCP FIN (Finish)
-tcp-rst TCP RST (Reset)
-tcp-push TCP Push
-Based on the above, we can write:
+## Filtering by Host
 
-tcpdump "tcp[tcpflags] == tcp-syn" to capture TCP packets with only the SYN (Synchronize) flag set, while all the other flags are unset.
-tcpdump "tcp[tcpflags] & tcp-syn != 0" to capture TCP packets with at least the SYN (Synchronize) flag set.
-tcpdump "tcp[tcpflags] & (tcp-syn|tcp-ack) != 0" to capture TCP packets with at least the SYN (Synchronize) or ACK (Acknowledge) flags set.
-You can write your own filter depending on what you are looking for.
+### All traffic to/from a host
 
-Tcpdump is a rich program with many options to customize how the packets are printed and displayed. We have selected to cover the following five options:
+```bash
+sudo tcpdump host 192.168.1.100
+sudo tcpdump host example.com
+```
 
--q: Quick output; print brief packet information
--e: Print the link-level header
--A: Show packet data in ASCII
--xx: Show packet data in hexadecimal format, referred to as hex
--X: Show packet headers and data in hex and ASCII
-To demonstrate how the above options manipulate the output, we will first display two captured packets without using any additional arguments.
+### Only outgoing traffic from a host
 
+```bash
+sudo tcpdump src host 192.168.1.100
+```
 
-Terminal
-user@TryHackMe$ tcpdump -r TwoPackets.pcap
-reading from file TwoPackets.pcap, link-type EN10MB (Ethernet), snapshot length 262144
-18:59:59.979771 IP 104.18.12.149.https > g5000.45248: Flags [P.], seq 2695955324:2695955349, ack 2856007037, win 16, options [nop,nop,TS val 412758285 ecr 3959057198], length 25
-18:59:59.980574 IP g5000.45248 > 104.18.12.149.https: Flags [P.], seq 1:30, ack 25, win 2175, options [nop,nop,TS val 3959057384 ecr 412758285], length 29
-Brief Packet Information
-If you prefer shorter output lines, you can opt for “quick” output with -q. The following example shows the timestamp, along with the source and destination IP addresses and source and destination port numbers.
+### Only incoming traffic to a host
 
+```bash
+sudo tcpdump dst host 192.168.1.100
+```
 
-Terminal
-user@TryHackMe$ tcpdump -r TwoPackets.pcap -q
-reading from file TwoPackets.pcap, link-type EN10MB (Ethernet), snapshot length 262144
-18:59:59.979771 IP 104.18.12.149.https > g5000.45248: tcp 25
-18:59:59.980574 IP g5000.45248 > 104.18.12.149.https: tcp 29
-Displaying Link-Level Header
-If you are on an Ethernet or WiFi network and want to include the MAC addresses in Tcpdump output, all you need to do is to add -e. This is convenient when you are learning how specific protocols, such as ARP and DHCP function. It can also help you track the source of any unusual packets on your network.
+## Filtering by Port
 
+### All traffic on a specific port
 
-Terminal
-user@TryHackMe$ tcpdump -r TwoPackets.pcap -e
-reading from file TwoPackets.pcap, link-type EN10MB (Ethernet), snapshot length 262144
-18:59:59.979771 44:df:65:d8:fe:6c (oui Unknown) > 02:83:1e:40:5d:17 (oui Unknown), ethertype IPv4 (0x0800), length 91: 104.18.12.149.https > g5000.45248: Flags [P.], seq 2695955324:2695955349, ack 2856007037, win 16, options [nop,nop,TS val 412758285 ecr 3959057198], length 25
-18:59:59.980574 02:83:1e:40:5d:17 (oui Unknown) > 44:df:65:d8:fe:6c (oui Unknown), ethertype IPv4 (0x0800), length 95: g5000.45248 > 104.18.12.149.https: Flags [P.], seq 1:30, ack 25, win 2175, options [nop,nop,TS val 3959057384 ecr 412758285], length 29
-Displaying Packets as ASCII
-ASCII stands for American Standard Code for Information Interchange; ASCII codes represent text. In other words, you can expect -A to display all the bytes mapped to English letters, numbers, and symbols.
+```bash
+sudo tcpdump port 22          # SSH
+sudo tcpdump port 80          # HTTP
+sudo tcpdump port 53          # DNS
+```
 
+### Only traffic FROM a specific source port
 
-Terminal
-user@TryHackMe$ tcpdump -r TwoPackets.pcap -A
-reading from file TwoPackets.pcap, link-type EN10MB (Ethernet), snapshot length 262144
-18:59:59.979771 IP 104.18.12.149.https > g5000.45248: Flags [P.], seq 2695955324:2695955349, ack 2856007037, win 16, options [nop,nop,TS val 412758285 ecr 3959057198], length 25
-E..M..@.5..)h.....BY.......|.;5}...........
-..1...k......j.3.2.....&9a.....-L
-18:59:59.980574 IP g5000.45248 > 104.18.12.149.https: Flags [P.], seq 1:30, ack 25, win 2175, options [nop,nop,TS val 3959057384 ecr 412758285], length 29
-E..Ql.@.@.VV..BYh........;5}...............
-..k...1.......1.y.&VC<#._J$..z...D#.`
-Displaying Packets in Hexadecimal Format
-ASCII format works well when the packet contents are plain-text English. It won’t work if the contents have undergone encryption or even compression. Furthermore, it won’t work for languages that don’t use the English alphabet. Hence, we need another way to display the packet contents regardless of format. Being 8 bits, any octet can be displayed as two hexadecimal digits. (Each hexadecimal digit represents 4 bits.) To display the packets in hexadecimal format, we must add -xx as shown in the terminal below.
+```bash
+sudo tcpdump src port 8080
+```
 
+### Only traffic TO a specific destination port
 
-Terminal
-user@TryHackMe$ tcpdump -r TwoPackets.pcap -xx
-reading from file TwoPackets.pcap, link-type EN10MB (Ethernet), snapshot length 262144
-18:59:59.979771 IP 104.18.12.149.https > g5000.45248: Flags [P.], seq 2695955324:2695955349, ack 2856007037, win 16, options [nop,nop,TS val 412758285 ecr 3959057198], length 25
-        0x0000:  0283 1e40 5d17 44df 65d8 fe6c 0800 4500
-        0x0010:  004d fbd8 4000 3506 d229 6812 0c95 c0a8
-        0x0020:  4259 01bb b0c0 a0b1 037c aa3b 357d 8018
-        0x0030:  0010 f905 0000 0101 080a 189a 310d ebfa
-        0x0040:  6b2e 1703 0300 146a 8f33 1832 e6a2 fb99
-        0x0050:  eb26 3961 dad4 1611 152d 4c
-18:59:59.980574 IP g5000.45248 > 104.18.12.149.https: Flags [P.], seq 1:30, ack 25, win 2175, options [nop,nop,TS val 3959057384 ecr 412758285], length 29
-        0x0000:  44df 65d8 fe6c 0283 1e40 5d17 0800 4500
-        0x0010:  0051 6ca8 4000 4006 5656 c0a8 4259 6812
-        0x0020:  0c95 b0c0 01bb aa3b 357d a0b1 0395 8018
-        0x0030:  087f 17e0 0000 0101 080a ebfa 6be8 189a
-        0x0040:  310d 1703 0300 18f4 31fa 798d 2656 433c
-        0x0050:  2389 5f4a 24c2 fa7a 1496 8444 238e 60
-Adding -xx lets us see the packet octet by octet. In the example above, we can closely inspect the IP and TCP headers in addition to the packet contents.
+```bash
+sudo tcpdump dst port 443     # HTTPS
+```
 
-Best of Both Worlds
-If you would like to display the captured packets in hexadecimal and ASCII formats, Tcpdump makes it easy with the -X option.
+## Filtering by Protocol
 
+Capture only certain types of traffic:
 
-Terminal
-user@TryHackMe$ tcpdump -r TwoPackets.pcap -X
-reading from file TwoPackets.pcap, link-type EN10MB (Ethernet), snapshot length 262144
-18:59:59.979771 IP 104.18.12.149.https > g5000.45248: Flags [P.], seq 2695955324:2695955349, ack 2856007037, win 16, options [nop,nop,TS val 412758285 ecr 3959057198], length 25
-        0x0000:  4500 004d fbd8 4000 3506 d229 6812 0c95  E..M..@.5..)h...
-        0x0010:  c0a8 4259 01bb b0c0 a0b1 037c aa3b 357d  ..BY.......|.;5}
-        0x0020:  8018 0010 f905 0000 0101 080a 189a 310d  ..............1.
-        0x0030:  ebfa 6b2e 1703 0300 146a 8f33 1832 e6a2  ..k......j.3.2..
-        0x0040:  fb99 eb26 3961 dad4 1611 152d 4c         ...&9a.....-L
-18:59:59.980574 IP g5000.45248 > 104.18.12.149.https: Flags [P.], seq 1:30, ack 25, win 2175, options [nop,nop,TS val 3959057384 ecr 412758285], length 29
-        0x0000:  4500 0051 6ca8 4000 4006 5656 c0a8 4259  E..Ql.@.@.VV..BY
-        0x0010:  6812 0c95 b0c0 01bb aa3b 357d a0b1 0395  h........;5}....
-        0x0020:  8018 087f 17e0 0000 0101 080a ebfa 6be8  ..............k.
-        0x0030:  189a 310d 1703 0300 18f4 31fa 798d 2656  ..1.......1.y.&V
-        0x0040:  433c 2389 5f4a 24c2 fa7a 1496 8444 238e  C<#._J$..z...D#.
-        0x0050:  60
-Summary and Examples
-The table below provides a summary of the command line options that we covered.
+```bash
+sudo tcpdump tcp              # TCP packets only
+sudo tcpdump udp              # UDP packets only
+sudo tcpdump icmp             # ICMP (ping, traceroute)
+sudo tcpdump ip               # All IPv4
+sudo tcpdump ip6              # All IPv6
+sudo tcpdump arp              # ARP traffic
+```
 
-Command	Explanation
-tcpdump -q	Quick and quite: brief packet information
-tcpdump -e	Include MAC addresses
-tcpdump -A	Print packets as ASCII encoding
-tcpdump -xx	Display packets in hexadecimal format
-tcpdump -X	Show packets in both hexadecimal and ASCII formats
+**Real example:** Capture all DNS queries
+
+```bash
+sudo tcpdump port 53 -n
+# -n prevents reverse DNS lookups that would slow this down
+```
+
+## Packet Size Filtering
+
+Useful for finding jumbo packets or tiny packets:
+
+```bash
+sudo tcpdump greater 1000     # Packets >= 1000 bytes
+sudo tcpdump less 100         # Packets <= 100 bytes
+```
+
+## Display Packet Contents
+
+### ASCII View
+
+```bash
+sudo tcpdump -A
+```
+
+Shows packet data as ASCII text. Works great if the payload is plain text (HTTP, etc). Garbage output if encrypted or binary.
+
+### Hexadecimal View
+
+```bash
+sudo tcpdump -xx
+```
+
+Shows every byte as hex. Two hex digits = one octet. Useful for:
+- Encrypted traffic (you can't read it anyway, but you see the pattern)
+- Binary protocols
+- Reverse engineering
+
+### Hex + ASCII (Best of Both)
+
+```bash
+sudo tcpdump -X
+```
+
+Shows hex on the left, ASCII on the right. Easiest to read.
+
+### MAC Addresses
+
+```bash
+sudo tcpdump -e
+```
+
+Includes Ethernet MAC addresses. Useful for learning ARP, DHCP, and tracking devices on the network.
+
+## TCP Flags
+
+TCP flags tell you what kind of packet it is. The main ones:
+
+- **SYN** — Connection start (three-way handshake begins)
+- **ACK** — Acknowledgement (data received)
+- **FIN** — Connection end
+- **RST** — Reset (connection abort)
+- **PUSH** — Send data now
+
+You can filter by flags using binary operations:
+
+```bash
+# Capture packets with SYN flag set
+sudo tcpdump "tcp[tcpflags] & tcp-syn != 0"
+
+# Capture packets with BOTH SYN and ACK
+sudo tcpdump "tcp[tcpflags] & (tcp-syn|tcp-ack) != 0"
+
+# Capture only pure SYN packets (SYN but not ACK)
+sudo tcpdump "tcp[tcpflags] == tcp-syn"
+```
+
+This is how you hunt for port scans, connection attempts, and anomalies.
+
+## Combining Filters
+
+Mix multiple conditions with `and`, `or`, `not`:
+
+```bash
+# SSH traffic from a specific host
+sudo tcpdump host 192.168.1.100 and port 22
+
+# All HTTP except from the web server
+sudo tcpdump port 80 and not host 10.0.0.50
+
+# DNS queries (port 53) but exclude responses from the router
+sudo tcpdump port 53 and not src host 192.168.1.1
+
+# Capture all traffic EXCEPT SSH
+sudo tcpdump "not port 22"
+```
+
+## Real-World Examples
+
+**Spy on HTTP traffic:**
+```bash
+sudo tcpdump -i eth0 -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
+```
+
+(This is complex but captures HTTP requests/responses with payloads)
+
+**Simpler: Just grab DNS queries:**
+```bash
+sudo tcpdump -i eth0 -n port 53
+```
+
+**Find all SYN packets (connection attempts):**
+```bash
+sudo tcpdump -i eth0 "tcp[tcpflags] & tcp-syn != 0"
+```
+
+**Capture traffic to/from a specific IP, save to file:**
+```bash
+sudo tcpdump host 192.168.1.50 -w suspect.pcap
+```
+
+Then open `suspect.pcap` in Wireshark for detailed analysis.
+
+## Quick Reference
+
+| Command | What it does |
+|---------|-------------|
+| `tcpdump -i eth0` | Capture on eth0 |
+| `tcpdump -i eth0 -w file.pcap` | Save to file |
+| `tcpdump -r file.pcap` | Read from file |
+| `tcpdump -c 100` | Capture 100 packets, stop |
+| `tcpdump host 1.2.3.4` | Filter by IP |
+| `tcpdump port 22` | Filter by port |
+| `tcpdump tcp` | Filter by protocol |
+| `tcpdump -A` | Show as ASCII |
+| `tcpdump -X` | Show as hex + ASCII |
+| `tcpdump -e` | Show MAC addresses |
+| `tcpdump -n` | Don't resolve hostnames |
+
+## Why This Matters for Your Lab
+
+On your security lab:
+- **Firewall testing:** Capture packets being blocked by UFW
+- **Fail2Ban verification:** See the failed login attempts that trigger bans
+- **Suricata IDS testing:** Capture malicious traffic to verify IDS alerts
+- **Protocol learning:** Understand ARP, DNS, DHCP, TCP handshakes in real-time
+
+Combined with Wireshark, tcpdump gives you full visibility into your network.
+
+---
+
+**Pro tip:** Learn the basic filters first. Once you're comfortable, check the man page for advanced options:
+
+```bash
+man tcpdump
+man pcap-filter
+```
