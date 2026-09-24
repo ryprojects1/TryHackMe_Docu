@@ -833,15 +833,6 @@ Then open `suspect.pcap` in Wireshark for detailed analysis.
 | `tcpdump -e` | Show MAC addresses |
 | `tcpdump -n` | Don't resolve hostnames |
 
-## Why This Matters for Your Lab
-
-On your security lab:
-- **Firewall testing:** Capture packets being blocked by UFW
-- **Fail2Ban verification:** See the failed login attempts that trigger bans
-- **Suricata IDS testing:** Capture malicious traffic to verify IDS alerts
-- **Protocol learning:** Understand ARP, DNS, DHCP, TCP handshakes in real-time
-
-Combined with Wireshark, tcpdump gives you full visibility into your network.
 
 ---
 
