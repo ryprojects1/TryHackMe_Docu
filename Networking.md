@@ -562,3 +562,11 @@ You can use Tcpdump to read packets from a file by using -r FILE. This is very u
 Limit the Number of Captured Packets
 You can specify the number of packets to capture by specifying the count using -c COUNT. Without specifying a count, the packet capture will continue till you interrupt it, for example, by pressing CTRL-C. Depending on your goal, you only need a limited number of packets.
 
+Command	Explanation
+tcpdump -i INTERFACE	Captures packets on a specific network interface
+tcpdump -w FILE	Writes captured packets to a file
+tcpdump -r FILE	Reads captured packets from a file
+tcpdump -c COUNT	Captures a specific number of packets
+tcpdump -n	Don’t resolve IP addresses
+tcpdump -nn	Don’t resolve IP addresses and don’t resolve protocol numbers
+tcpdump -v	Verbose display; verbosity can be increased with -vv and -vvv
