@@ -544,3 +544,21 @@ dns.qry.name contains "google"   # DNS queries for google
 - View → Coloring Rules
 - Red for suspicious, green for known-good
 - Makes patterns jump out
+
+#Tcpdump: The Basics
+This room introduces some basic command-line arguments for using Tcpdump. The Tcpdump tool and its libpcap library are written in C and C++ and were released for Unix-like systems in the late 1980s or early 1990s. Consequently, they are very stable and offer optimal speed. The libpcap library is the foundation for various other networking tools today. Moreover, it was ported to MS Windows as winpcap.
+Specify the Network Interface
+The first thing to decide is which network interface to listen to using -i INTERFACE. You can choose to listen on all available interfaces using -i any; alternatively, you can specify an interface you want to listen on, such as -i eth0.
+
+A command such as ip address show (or merely ip a s) would list the available network interfaces. In the terminal below, we see one network card, ens5, in addition to the loopback address.
+
+
+Save the Captured Packets
+In many cases, you should check the captured packets again later. This can be achieved by saving to a file using -w FILE. The file extension is most commonly set to .pcap. The saved packets can be inspected later using another program, such as Wireshark. You won’t see the packets scrolling when you choose the -w option.
+
+Read Captured Packets from a File
+You can use Tcpdump to read packets from a file by using -r FILE. This is very useful for learning about protocol behaviour. You can capture network traffic over a suitable time frame to inspect a specific protocol, then read the captured file while applying filters to display the packets you are interested in. Furthermore, it might be a packet capture file that contains a network attack that took place, and you inspect it to analyze the attack.
+
+Limit the Number of Captured Packets
+You can specify the number of packets to capture by specifying the count using -c COUNT. Without specifying a count, the packet capture will continue till you interrupt it, for example, by pressing CTRL-C. Depending on your goal, you only need a limited number of packets.
+
