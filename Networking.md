@@ -903,3 +903,7 @@ Option	Explanation
 --min-parallelism <numprobes> and --max-parallelism <numprobes>	Minimum and maximum number of parallel probes
 --min-rate <number> and --max-rate <number>	Minimum and maximum rate (packets/second)
 --host-timeout	Maximum amount of time to wait for a target host
+
+Most likely, the -v option is more than enough for verbose output; however, if you are still unsatisfied, you can increase the verbosity level by adding another “v” such as -vv or even -vvvv. You can also specify the verbosity level directly, for example, -v2 and -v4. You can even increase the verbosity level by pressing “v” after the scan already started.
+
+If all this verbosity does not satisfy your needs, you must consider the -d for debugging-level output. Similarly, you can increase the debugging level by adding one or more “d” or by specifying the debugging level directly. The maximum level is -d9; before choosing that, make sure you are ready for thousands of information and debugging lines.
