@@ -897,3 +897,9 @@ Option	Explanation
 -sV	Service and version detection
 -A	OS detection, version detection, and other additions
 -Pn	Scan hosts that appear to be down
+
+Option	Explanation
+-T<0-5>	Timing template – paranoid (0), sneaky (1), polite (2), normal (3), aggressive (4), and insane (5)
+--min-parallelism <numprobes> and --max-parallelism <numprobes>	Minimum and maximum number of parallel probes
+--min-rate <number> and --max-rate <number>	Minimum and maximum rate (packets/second)
+--host-timeout	Maximum amount of time to wait for a target host
