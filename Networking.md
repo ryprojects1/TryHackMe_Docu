@@ -892,3 +892,8 @@ Network Distance: 1 hop
 OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 1.44 seconds
         
+Option	Explanation
+-O	OS detection
+-sV	Service and version detection
+-A	OS detection, version detection, and other additions
+-Pn	Scan hosts that appear to be down
