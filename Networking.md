@@ -867,3 +867,28 @@ Option	Explanation
 -sU	UDP scan
 -F	Fast mode – scans the 100 most common ports
 -p[range]	Specifies a range of port numbers – -p- scans all the ports
+
+Summary
+Option	Explanation
+-O	OS detection
+-sV	Service and version detection
+-A	OS detection, version detection, and other additions
+-Pn	Scan hosts that appear to be down
+
+           root@tryhackme:~# nmap -sS -O 192.168.124.211 
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-13 13:37 EEST
+Nmap scan report for ubuntu22lts-vm (192.168.124.211)
+Host is up (0.00043s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+MAC Address: 52:54:00:54:FA:4E (QEMU virtual NIC)
+Device type: general purpose
+Running: Linux 4.X|5.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
+OS details: Linux 4.15 - 5.8
+Network Distance: 1 hop
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1.44 seconds
+        
