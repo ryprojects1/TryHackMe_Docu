@@ -843,96 +843,67 @@ man tcpdump
 man pcap-filter
 ```
 
-Scanning a “Local” Network
-In this context, we use the term “local” to refer to the network we are directly connected to, such as an Ethernet or WiFi network. In the first demonstration, we will scan the WiFi network to which we are connected. Our IP address is 192.168.66.89, and we are scanning the 192.168.66.0/24 network. The nmap -sn 192.168.66.0/24 command and its output are shown in the terminal below.
+# Nmap Cheatsheet
 
-Because we are scanning the local network, where we are connected via Ethernet or WiFi, we can look up the MAC addresses of the devices. Consequently, we can figure out the network card vendors, which is beneficial information as it can help us guess the type of target device(s).
+## Host Discovery
+| Option | Description |
+|--------|-------------|
+| `-sn` | Ping scan — host discovery only, no port scan |
+| `-sL` | List scan — list targets without scanning |
+| `-Pn` | Treat all hosts as online (skip host discovery) |
 
-When scanning a directly connected network, Nmap starts by sending ARP requests. When a device responds to the ARP request, Nmap labels it with “Host is up”.
+**Local network** — Nmap sends ARP requests, can identify MAC addresses + vendor  
+**Remote network** — Can't use ARP (goes through routers), uses TCP/UDP instead
 
-Scanning a “Remote” Network
-Consider the case of a “remote” network. In this context, “remote” means that at least one router separates our system from this network. As a result, all our traffic to the target systems must go through one or more routers. Unlike scanning a local network, we cannot send an ARP request to the target.
+---
 
-Our system has the IP address 192.168.66.89 and belongs to the 192.168.66.0/24 network. In the terminal below we scan the target network 192.168.11.0/24 where there are two or more routers (hops) separate our local system from the target hosts.
+## Port Scanning
+| Option | Description |
+|--------|-------------|
+| `-sT` | TCP connect scan — full three-way handshake |
+| `-sS` | TCP SYN scan — only first step of handshake (stealthier) |
+| `-sU` | UDP scan |
+| `-F` | Fast mode — top 100 ports only |
+| `-p<range>` | Specific port range e.g. `-p80,443` or `-p-` for all ports |
 
+---
 
-It is worth noting that we can have more control over how Nmap discovers live hosts such as -PS[portlist], -PA[portlist], -PU[portlist] for TCP SYN, TCP ACK, and UDP discovery via the given ports. However, this is beyond the scope of this room.
+## Service Detection
+| Option | Description |
+|--------|-------------|
+| `-O` | OS detection |
+| `-sV` | Service and version detection |
+| `-A` | OS + version + extras (aggressive) |
 
-As a final point, Nmap offers a list scan with the option -sL. This scan only lists the targets to scan without actually scanning them. For example, nmap -sL 192.168.0.1/24 will list the 256 targets that will be scanned. This option helps confirm the targets before running the actual scan.
+---
 
-Summary
-Option	Explanation
--sT	TCP connect scan – complete three-way handshake
--sS	TCP SYN – only first step of the three-way handshake
--sU	UDP scan
--F	Fast mode – scans the 100 most common ports
--p[range]	Specifies a range of port numbers – -p- scans all the ports
+## Timing
+| Option | Description |
+|--------|-------------|
+| `-T<0-5>` | 0=paranoid, 1=sneaky, 2=polite, 3=normal, 4=aggressive, 5=insane |
+| `--min-rate / --max-rate` | Packets per second |
+| `--min-parallelism / --max-parallelism` | Parallel probes |
+| `--host-timeout` | Max wait time per host |
 
-Summary
-Option	Explanation
--O	OS detection
--sV	Service and version detection
--A	OS detection, version detection, and other additions
--Pn	Scan hosts that appear to be down
+---
 
-           root@tryhackme:~# nmap -sS -O 192.168.124.211 
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-13 13:37 EEST
-Nmap scan report for ubuntu22lts-vm (192.168.124.211)
-Host is up (0.00043s latency).
-Not shown: 999 closed tcp ports (reset)
-PORT   STATE SERVICE
-22/tcp open  ssh
-MAC Address: 52:54:00:54:FA:4E (QEMU virtual NIC)
-Device type: general purpose
-Running: Linux 4.X|5.X
-OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
-OS details: Linux 4.15 - 5.8
-Network Distance: 1 hop
+## Output
+| Option | Description |
+|--------|-------------|
+| `-oN <file>` | Normal output |
+| `-oX <file>` | XML output |
+| `-oG <file>` | Grep-able output |
+| `-oA <basename>` | All formats at once |
+| `-v / -vv / -v4` | Verbosity level |
+| `-d / -d9` | Debug level (max -d9) |
 
-OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 1.44 seconds
-        
-Option	Explanation
--O	OS detection
--sV	Service and version detection
--A	OS detection, version detection, and other additions
--Pn	Scan hosts that appear to be down
+---
 
-Option	Explanation
--T<0-5>	Timing template – paranoid (0), sneaky (1), polite (2), normal (3), aggressive (4), and insane (5)
---min-parallelism <numprobes> and --max-parallelism <numprobes>	Minimum and maximum number of parallel probes
---min-rate <number> and --max-rate <number>	Minimum and maximum rate (packets/second)
---host-timeout	Maximum amount of time to wait for a target host
-
-Most likely, the -v option is more than enough for verbose output; however, if you are still unsatisfied, you can increase the verbosity level by adding another “v” such as -vv or even -vvvv. You can also specify the verbosity level directly, for example, -v2 and -v4. You can even increase the verbosity level by pressing “v” after the scan already started.
-
-If all this verbosity does not satisfy your needs, you must consider the -d for debugging-level output. Similarly, you can increase the debugging level by adding one or more “d” or by specifying the debugging level directly. The maximum level is -d9; before choosing that, make sure you are ready for thousands of information and debugging lines.
-
-Option	Explanation
--sL	List scan – list targets without scanning
-Host Discovery	
--sn	Ping scan – host discovery only
-Port Scanning	
--sT	TCP connect scan – complete three-way handshake
--sS	TCP SYN – only first step of the three-way handshake
--sU	UDP Scan
--F	Fast mode – scans the 100 most common ports
--p[range]	Specifies a range of port numbers – -p- scans all the ports
--Pn	Treat all hosts as online – scan hosts that appear to be down
-Service Detection	
--O	OS detection
--sV	Service version detection
--A	OS detection, version detection, and other additions
-Timing	
--T<0-5>	Timing template – paranoid (0), sneaky (1), polite (2), normal (3), aggressive (4), and insane (5)
---min-parallelism <numprobes> and --max-parallelism <numprobes>	Minimum and maximum number of parallel probes
---min-rate <number> and --max-rate <number>	Minimum and maximum rate (packets/second)
---host-timeout	Maximum amount of time to wait for a target host
-Real-time output	
--v	Verbosity level – for example, -vv and -v4
--d	Debugging level – for example -d and -d9
-Report	
--oN <filename>	Normal output
--oX <filename>	XML output
--oG <filename>	grep-able output
--oA <basename>	Output in all major formats
+## Common Examples
+```bash
+nmap -sn 192.168.1.0/24          # discover live hosts on network
+nmap -sS -O 192.168.1.10         # SYN scan + OS detection
+nmap -sV -p 22,80,443 10.10.1.1  # version detect on specific ports
+nmap -A -T4 192.168.1.10         # aggressive scan, fast timing
+nmap -sL 192.168.0.0/24          # list 256 targets without scanning
+```
