@@ -68,3 +68,6 @@ Authentication: You want to be sure you communicate with the right person, not s
 Authenticity: You can verify that the information comes from the claimed source.
 Integrity: You must ensure that no one changes the data you exchange.
 Confidentiality: You want to prevent an unauthorised party from eavesdropping on your conversations.
+
+RSA is a public-key encryption algorithm that enables secure data transmission over insecure channels. With an insecure channel, we expect adversaries to eavesdrop on it.
+
