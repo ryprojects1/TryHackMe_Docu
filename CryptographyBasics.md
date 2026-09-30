@@ -64,3 +64,7 @@ nmap -sL 192.168.0.0/24          # list 256 targets without scanning
 ```
 
 Public Key Cryptography Basics
+Authentication: You want to be sure you communicate with the right person, not someone else pretending.
+Authenticity: You can verify that the information comes from the claimed source.
+Integrity: You must ensure that no one changes the data you exchange.
+Confidentiality: You want to prevent an unauthorised party from eavesdropping on your conversations.
