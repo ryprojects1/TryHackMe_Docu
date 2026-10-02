@@ -63,52 +63,239 @@ nmap -A -T4 192.168.1.10         # aggressive scan, fast timing
 nmap -sL 192.168.0.0/24          # list 256 targets without scanning
 ```
 
-Public Key Cryptography Basics
-Authentication: You want to be sure you communicate with the right person, not someone else pretending.
-Authenticity: You can verify that the information comes from the claimed source.
-Integrity: You must ensure that no one changes the data you exchange.
-Confidentiality: You want to prevent an unauthorised party from eavesdropping on your conversations.
+# Public Key Cryptography Basics
+
+## Core Principles
+
+### Authentication
+You want to be sure you communicate with the right person, not someone else pretending.
+
+### Authenticity
+You can verify that the information comes from the claimed source.
+
+### Integrity
+You must ensure that no one changes the data you exchange.
+
+### Confidentiality
+You want to prevent an unauthorised party from eavesdropping on your conversations.
+
+---
+
+## RSA Encryption
 
 RSA is a public-key encryption algorithm that enables secure data transmission over insecure channels. With an insecure channel, we expect adversaries to eavesdrop on it.
 
-Bob chooses two prime numbers: p = 157 and q = 199. He calculates n = p × q = 31243.
-With ϕ(n) = n − p − q + 1 = 31243 − 157 − 199 + 1 = 30888, Bob selects e = 163 such that e is relatively prime to ϕ(n); moreover, he selects d = 379, where e × d = 1 mod ϕ(n), i.e., e × d = 163 × 379 = 61777 and 61777 mod 30888 = 1. The public key is (n,e), i.e., (31243,163) and the private key is $(n,d), i.e., (31243,379).
-Let’s say that the value they want to encrypt is x = 13, then Alice would calculate and send y = xe mod n = 13163 mod 31243 = 16341.
-Bob will decrypt the received value by calculating x = yd mod n = 16341379 mod 31243 = 13. This way, Bob recovers the value that Alice sent.
+### How RSA Works
 
-DSA (Digital Signature Algorithm) is a public-key cryptography algorithm specifically designed for digital signatures.
-ECDSA (Elliptic Curve Digital Signature Algorithm) is a variant of DSA that uses elliptic curve cryptography to provide smaller key sizes for equivalent security.
-ECDSA-SK (ECDSA with Security Key) is an extension of ECDSA. It incorporates hardware-based security keys for enhanced private key protection.
-Ed25519 is a public-key signature system using EdDSA (Edwards-curve Digital Signature Algorithm) with Curve25519.
-Ed25519-SK (Ed25519 with Security Key) is a variant of Ed25519. Similar to ECDSA-SK, it uses a hardware-based security key for improved private key protection.
+**Example:**
 
-Certificates: Prove Who You Are!
-Certificates are an essential application of public key cryptography, and they are also linked to digital signatures. A common place where they’re used is for HTTPS. How does your web browser know that the server you’re talking to is the real tryhackme.com?
+Bob chooses two prime numbers:
+- `p = 157`
+- `q = 199`
 
-The answer lies in certificates. The web server has a certificate that says it is the real tryhackme.com. The certificates have a chain of trust, starting with a root CA (Certificate Authority). From install time, your device, operating system, and web browser automatically trust various root CAs. Certificates are trusted only when the Root CAs say they trust the organisation that signed them. In a way, it is a chain; for example, the certificate is signed by an organisation, the organisation is trusted by a CA, and the CA is trusted by your browser. Therefore, your browser trusts the certificate. In general, there are long chains of trust. You can take a look at the certificate authorities trusted by Mozilla Firefox here(opens in new tab) and by Google Chrome here(opens in new tab).
+He calculates:
+- `n = p × q = 31243`
+- `ϕ(n) = n − p − q + 1 = 31243 − 157 − 199 + 1 = 30888`
 
-Let’s say you have a website and want to use HTTPS. This step requires having a TLS certificate. You can get one from the various certificate authorities for an annual fee. Furthermore, you can get your own TLS certificates for domains you own using Let's Encrypt(opens in new tab) for free. If you run a website, it’s worth setting up and switching to HTTPS, as any modern website would do.
+Bob selects:
+- `e = 163` (relatively prime to ϕ(n))
+- `d = 379` (where e × d = 1 mod ϕ(n))
 
-GPG is commonly used in email to protect the confidentiality of the email messages. Furthermore, it can be used to sign an email message and confirm its integrity.
+Verification: `e × d = 163 × 379 = 61777` and `61777 mod 30888 = 1` ✓
 
-Hashing plays a vital role in our daily use of the Internet. Like other cryptographic functions, hashing remains hidden from the user. Hashing helps protect data’s integrity and ensure password confidentiality.
+**Keys:**
+- **Public Key:** `(n, e)` = `(31243, 163)`
+- **Private Key:** `(n, d)` = `(31243, 379)`
 
-A hash collision is when two different inputs give the same output. Hash functions are designed to avoid collisions as best as possible. Furthermore, hash functions are designed to prevent an attacker from being able to create, i.e., engineer, a collision intentionally. However, because the number of inputs is practically unlimited and the number of possible outputs is limited, this leads to a pigeonhole effect.
+### Encryption/Decryption
 
-The pigeonhole effect states that the number of items (pigeons) is more than the number of containers (pigeonholes)
+**Alice encrypts message x = 13:**
 
-A Rainbow Table is a lookup table of hashes to plaintexts, so you can quickly find out what password a user had just from the hash. A rainbow table trades the time to crack a hash for hard disk space, but it takes time to create. Here’s a quick example to get an idea of what a rainbow table looks like.
+```
+y = x^e mod n = 13^163 mod 31243 = 16341
+```
 
-Websites like CrackStation(opens in new tab) and Hashes.com(opens in new tab) internally use massive rainbow tables to provide fast password cracking for hashes without salts. Doing a lookup in a sorted list of hashes is quicker than trying to crack the hash
+**Bob decrypts:**
 
-To protect against rainbow tables, we add a salt to the passwords. The salt is a randomly generated value stored in the database and should be unique to each user. In theory, you could use the same salt for all users, but duplicate passwords would still have the same hash and a rainbow table could still be created for passwords with that salt.
+```
+x = y^d mod n = 16341^379 mod 31243 = 13
+```
 
-You can’t “decrypt” password hashes. They’re not encrypted. You have to crack the hashes by hashing many different inputs (such as rockyou.txt as it covers many possible passwords), potentially adding the salt if there is one and comparing it to the target hash. Once it matches, you know what the password was. Tools like Hashcat(opens in new tab) and John the Ripper(opens in new tab) are commonly used for these purposes.
-Integrity Checking
-Hashing can be used to check that files haven’t been changed. If you put the same data in, you always get the same data out. Even if a single bit changes, the hash will change significantly, as demonstrated in Task 2. This means you can use it to check that files haven’t been modified or to ensure that the file you downloaded is identical to the file on the web server. The text file listed below shows the SHA256 hash of two Fedora Workstation ISO files. If running sha256sum on the file you downloaded returned the same hash listed in this signed file, you can be confident that your file is identical to the official one.HMACs
-HMAC (Keyed-Hash Message Authentication Code) is a type of message authentication code (MAC) that uses a cryptographic hash function in combination with a secret key to verify the authenticity and integrity of data.
+Bob recovers the original message.
 
-An HMAC can be used to ensure that the person who created the HMAC is who they say they are, i.e., authenticity is confirmed; moreover, it proves that the message hasn’t been modified or corrupted, i.e., integrity is maintained. This is achieved through the use of a secret key to prove authenticity and a hashing algorithm to produce a hash and prove integrity.
+---
 
-Encoding converts data from one form to another to make it compatible with a specific system. ASCII, UTF-8, UTF-16, UTF-32, ISO-8859-1, and Windows-1252 are valid encoding methods for the English language. Note that UTF-8, UTF-16, and UTF-32 are Unicode encodings, and they can represent characters from other languages, such as Arabic and Japanese.
+## Digital Signature Algorithms
 
+### DSA (Digital Signature Algorithm)
+A public-key cryptography algorithm specifically designed for digital signatures.
+
+### ECDSA (Elliptic Curve Digital Signature Algorithm)
+A variant of DSA that uses elliptic curve cryptography to provide smaller key sizes for equivalent security.
+
+### ECDSA-SK (ECDSA with Security Key)
+An extension of ECDSA that incorporates hardware-based security keys for enhanced private key protection.
+
+### Ed25519
+A public-key signature system using EdDSA (Edwards-curve Digital Signature Algorithm) with Curve25519.
+
+### Ed25519-SK (Ed25519 with Security Key)
+A variant of Ed25519 that uses hardware-based security keys for improved private key protection.
+
+---
+
+## Certificates: Prove Who You Are!
+
+Certificates are an essential application of public key cryptography, linked to digital signatures. A common place where they're used is **HTTPS**.
+
+### Chain of Trust
+
+Your web browser knows that the server is real through certificates. The flow works like this:
+
+1. **Root CA** (Certificate Authority) is trusted by your browser by default
+2. Root CA trusts an **organization**
+3. Organization signs a **certificate**
+4. Your browser trusts the certificate because it trusts the chain
+
+### Getting TLS Certificates
+
+- **Commercial CAs:** Various certificate authorities charge annual fees
+- **Let's Encrypt:** Free TLS certificates for domains you own
+
+### Browser Trust
+- [Mozilla Firefox trusted CAs](https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/)
+- [Google Chrome trusted CAs](https://support.google.com/chrome/answer/6211280)
+
+---
+
+## GPG (GNU Privacy Guard)
+
+GPG is commonly used in email to:
+- Protect the **confidentiality** of email messages
+- **Sign** email messages to confirm **authenticity** and **integrity**
+
+---
+
+## Hashing
+
+Hashing plays a vital role in protecting data integrity and ensuring password confidentiality. Hash functions remain hidden from the user but are essential for internet security.
+
+### Hash Collisions
+
+A **hash collision** occurs when two different inputs produce the same output.
+
+Hash functions are designed to:
+- Avoid collisions as much as possible
+- Prevent attackers from intentionally engineering collisions
+
+**The Pigeonhole Effect:** With unlimited inputs and limited outputs, collisions are mathematically inevitable.
+
+### Rainbow Tables
+
+A **rainbow table** is a lookup table that maps hashes to plaintext values, allowing quick password cracking.
+
+**Trade-off:** Time to crack → Hard disk space (but takes time to create)
+
+**Fast Cracking Sites:**
+- [CrackStation](https://crackstation.net/)
+- [Hashes.com](https://hashes.com/)
+
+These sites use massive rainbow tables for fast hash lookups without salts.
+
+### Defense: Salting
+
+To protect against rainbow tables, add a **salt** to passwords:
+
+- Salt is a **randomly generated value** stored in the database
+- Should be **unique to each user**
+- Without per-user salts, duplicate passwords still produce identical hashes
+- Attackers could create a rainbow table for passwords with shared salts
+
+### Password Cracking
+
+You can't "decrypt" password hashes — they're not encrypted. You must:
+
+1. Hash many different inputs (e.g., rockyou.txt wordlist)
+2. Add salt if one exists
+3. Compare to target hash
+4. When it matches, you've found the password
+
+**Tools:**
+- [Hashcat](https://hashcat.net/hashcat/)
+- [John the Ripper](https://www.openwall.com/john/)
+
+---
+
+## Integrity Checking
+
+Hashing verifies that files haven't been modified.
+
+### How It Works
+
+- Same input → Same output always
+- Single bit change → Hash changes completely
+- Verify file integrity by comparing hashes
+
+### Example
+
+SHA256 hash of a Fedora Workstation ISO file:
+
+```
+sha256sum fedora-workstation-live-x86_64-39-1.5.iso
+abcd1234... fedora-workstation-live-x86_64-39-1.5.iso
+```
+
+If your downloaded file produces the same hash, it's identical to the official version.
+
+---
+
+## HMACs (Keyed-Hash Message Authentication Code)
+
+An **HMAC** uses a cryptographic hash function combined with a secret key to verify authenticity and integrity.
+
+### HMAC Benefits
+
+- **Authenticity:** Secret key proves the creator is who they claim
+- **Integrity:** Hashing proves the message hasn't been modified
+
+### How It Works
+
+```
+HMAC = hash(secret_key + message)
+```
+
+Both parties share the secret key. Only they can create/verify the HMAC.
+
+---
+
+## Encoding vs Encryption
+
+### Encoding
+Converts data from one form to another for system compatibility.
+
+**Common Encodings:**
+- ASCII
+- UTF-8, UTF-16, UTF-32 (Unicode — supports Arabic, Japanese, etc.)
+- ISO-8859-1
+- Windows-1252
+
+**Note:** Encoding is NOT encryption. It's reversible and provides no security.
+
+---
+
+## Key Takeaways
+
+✓ **Public-key cryptography** enables secure communication over insecure channels  
+✓ **RSA, ECDSA, Ed25519** are common algorithms with different trade-offs  
+✓ **Certificates** use chain-of-trust to verify identity  
+✓ **Hashing** ensures integrity; salting prevents rainbow table attacks  
+✓ **HMACs** prove both authenticity and integrity  
+✓ **Encoding** ≠ **Encryption** — encoding is reversible and unsecure  
+
+---
+
+## Resources
+
+- [NIST Cryptography Guidelines](https://csrc.nist.gov/)
+- [OWASP Cryptographic Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)
+- [Let's Encrypt](https://letsencrypt.org/)
