@@ -293,9 +293,14 @@ Converts data from one form to another for system compatibility.
 ✓ **Encoding** ≠ **Encryption** — encoding is reversible and unsecure  
 
 ---
+#John the ripper: the basics
+Where John Comes in
+Even though the algorithm is not feasibly reversible, that doesn’t mean cracking the hashes is impossible. If you have the hashed version of a password, for example, and you know the hashing algorithm, you can use that hashing algorithm to hash a large number of words, called a dictionary. You can then compare these hashes to the one you’re trying to crack to see if they match. If they do, you know what word corresponds to that hash- you’ve cracked it!
 
-## Resources
+This process is called a dictionary attack, and John the Ripper, or John as it’s commonly shortened, is a tool for conducting fast brute force attacks on various hash types.
 
-- [NIST Cryptography Guidelines](https://csrc.nist.gov/)
-- [OWASP Cryptographic Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)
-- [Let's Encrypt](https://letsencrypt.org/)
+NThash is the hash format modern Windows operating system machines use to store user and service passwords. It’s also commonly referred to as NTLM, which references the previous version of Windows format for hashing passwords known as LM, thus NT/LM.
+
+
+
+
