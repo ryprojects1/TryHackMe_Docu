@@ -301,6 +301,12 @@ This process is called a dictionary attack, and John the Ripper, or John as itâ€
 
 NThash is the hash format modern Windows operating system machines use to store user and service passwords. Itâ€™s also commonly referred to as NTLM, which references the previous version of Windows format for hashing passwords known as LM, thus NT/LM.
 
+criteria, many users will use something like the following:
 
+Polopassword1!
+
+Consider the password with a capital letter first and a number followed by a symbol at the end. This familiar pattern of the password, appended and prepended by modifiers (such as capital letters or symbols), is a memorable pattern that people use and reuse when creating passwords. This pattern can let us exploit password complexity predictability.
+
+Now, this does meet the password complexity requirements; however, as attackers, we can exploit the fact that we know the likely position of these added elements to create dynamic passwords from our wordlists.
 
 
