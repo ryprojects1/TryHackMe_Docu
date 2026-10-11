@@ -28,3 +28,19 @@ each message have a specific format
 - Headers,  made up of key-value pairs. They give instructions to both the client and the server handling the request or response.
 - Empty line, little divider that separates the header from the body. It’s essential because it shows where the headers stop and where the actual content of the message begins.
 - body, where the actual data is stored. In a response, it’s where the server puts the content that the user requested (like a webpage or API data).
+
+## HTTP request
+http request is what a user sends to a web server to interact with web application and making something happen.
+In a request line, there is three parts
+HTTP methods, tells the server what action the user wants to perform on the resource identified by the URL path
+- GET, Used to fetch data from the server without making any changes
+- POST,Sends data to the server, usually to create or update something.
+- PUT, Replaces or updates something on the server.
+- DELETE, Removes something from the server.
+- PATCH, Updates part of a resource. It’s useful for making small changes without replacing the whole thing, but always validate the data to avoid inconsistencies.
+- HEAD, Works like GET but only retrieves headers, not the full content. handy for checking metadata without downloading the full response.
+- OPTIONS, Tells you what methods are available for a specific resource, helping clients understand what they can do with the server.
+- TRACE, it shows which methods are allowed, often for debugging
+- CONNECT, Used to create a secure connection, like for HTTPS.
+  
+- 
