@@ -1,4 +1,4 @@
-#Web Application Basics
+# Web Application Basics
 ## Front end, what the user usaully see. Like HTML, CSS and javascript 
 - CSS, describes a standard appearance m such as colours, type of text and layout.
 - Javascript, enables more complex activity in the web browser. A more advanced type of HTML
@@ -42,5 +42,26 @@ HTTP methods, tells the server what action the user wants to perform on the reso
 - OPTIONS, Tells you what methods are available for a specific resource, helping clients understand what they can do with the server.
 - TRACE, it shows which methods are allowed, often for debugging
 - CONNECT, Used to create a secure connection, like for HTTPS.
-  
-- 
+  URL path, tells the server where to find the resource the user is asking for
+  in the URL https://tryhackme.com/api/users/123, the path /api/users/123 identifies a specific user
+  attackers always try to maniuplate the url path so it is crucial to
+  - Validate the URL path to prevent unauthorised access
+- Sanitise the path to avoid injection attacks
+- Protect sensitive data by conducting privacy and risk assessments
+HTTP version
+HTTP/0.9 (1991)
+The first version, only supported GET requests.
+
+HTTP/1.0 (1996)
+Added headers and better support for different types of content, improving caching.
+
+HTTP/1.1 (1997)
+Brought persistent connections, chunked transfer encoding, and better caching. It’s still widely used today.
+
+HTTP/2 (2015)
+Introduced features like multiplexing, header compression, and prioritisation for faster performance.
+
+HTTP/3 (2022)
+Built on HTTP/2, but uses a new protocol (QUIC) for quicker and more secure connections.
+
+Although HTTP/2 and HTTP/3 offer better speed and security, many systems still use HTTP/1.1 because it’s well-supported and works with most existing setups. However, upgrading to HTTP/2 or HTTP/3 can provide significant performance and security improvements as more systems adopt them.
