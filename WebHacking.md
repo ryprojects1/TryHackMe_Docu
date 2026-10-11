@@ -15,3 +15,16 @@ Port, port number help to direct you browser to the right service on the web ser
 Path, points to the specific file or page on the server you're trying to access
 Query String, part of the URL that starts with a question mark (?). It’s often used for things like search terms or form inputs. Since users can modify these query strings, it’s important to handle them securely to prevent attacks like injections, where malicious code could be added.
 Fragment start with #, help point to a specific section of a webpage
+
+## HTTP messages 
+these messages are packets of data exchanged between a user (the client) and the web server.
+There are two types of HTTP messages:
+
+HTTP Requests: Sent by the user to trigger actions on the web application.
+HTTP Responses: Sent by the server in response to the user’s request.
+
+each message have a specific format
+- Start line, tells you what kind of message is being sent—whether it's a request from the user or a response from the server.
+- Headers,  made up of key-value pairs. They give instructions to both the client and the server handling the request or response.
+- Empty line, little divider that separates the header from the body. It’s essential because it shows where the headers stop and where the actual content of the message begins.
+- body, where the actual data is stored. In a response, it’s where the server puts the content that the user requested (like a webpage or API data).
