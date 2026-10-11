@@ -65,3 +65,33 @@ HTTP/3 (2022)
 Built on HTTP/2, but uses a new protocol (QUIC) for quicker and more secure connections.
 
 Although HTTP/2 and HTTP/3 offer better speed and security, many systems still use HTTP/1.1 because it’s well-supported and works with most existing setups. However, upgrading to HTTP/2 or HTTP/3 can provide significant performance and security improvements as more systems adopt them.
+
+Common Request Headers
+
+Request Header	Example	Description
+Host	
+Host: tryhackme.com
+
+Specifies the name of the web server the request is for.
+User-Agent	
+User-Agent: Mozilla/5.0
+
+Shares information about the web browser the request is coming from.
+Referer	
+Referer: https://www.google.com/
+
+Indicates the URL from which the request came from.
+Cookie	
+Cookie: user_type=student; room=introtowebapplication; room_status=in_progress
+
+Information the web server previously asked the web browser to store is held in cookies.
+Content-Type	
+Content-Type: application/json
+
+Describes what type or format of data is in the request.
+
+Request body
+- url encoded,A format where data is structured in pairs of key and value where (key=value). Multiple pairs are separated by an (&) symbol
+- form data, Allows multiple data blocks to be sent where each block is separated by a boundary string.
+- JSON, the data can be sent using the JSON (JavaScript Object Notation) structure
+- XML, In XML formatting, data is structured inside labels called tags, which have an opening and closing
