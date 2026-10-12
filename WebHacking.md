@@ -266,4 +266,9 @@ How Hackers Exploit the Functionality
 
 Imagine receiving an email from a stranger with an attached HTML file. The file looks harmless, but when you open it, it contains JS that disrupts your browsing experience. For example, the following code will show an alert box with the message "Hacked" three times:
 
+Conditional Statements in Action
 
+One of the most used conditional statements is the if-else statements, which allows you to execute different blocks of code depending on whether a condition evaluates to true or false.
+Bypassing Login Forms
+
+Suppose a developer has implemented authentication functionality in JS, where only users with the username "admin" and passwords matching a specific value are allowed to log in. To see this in action, open the login.html file in the exercises folder
