@@ -258,3 +258,5 @@ Internal JS refers to embedding the JS code directly within an HTML document. Th
 External JavaScript
 
 External JS involves creating and storing JS code in a separate file ending with a .js file extension. This method helps developers keep the HTML document clean and organised. 
+When pen-testing a web application, it is important to check whether the website uses internal or external JS. This can be easily verified by viewing the page's source code. To do this, open the page external_test.html located in the exercise folder in Chrome, right-click anywhere on the page, and select View Page Source.
+
