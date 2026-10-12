@@ -254,3 +254,7 @@ Loop, Loops allow you to run a code block multiple times as long as a condition 
 Once Chrome is open, press Ctrl + Shift + I to open the Console or right-click anywhere on the page and select Inspect.
 hen, click on the Console tab. This console allows you to run JS code directly in the browser without installing additional software.
 Internal JS refers to embedding the JS code directly within an HTML document. This method is preferable for beginners because it allows them to see how the script interacts with the HTML.
+
+External JavaScript
+
+External JS involves creating and storing JS code in a separate file ending with a .js file extension. This method helps developers keep the HTML document clean and organised. 
