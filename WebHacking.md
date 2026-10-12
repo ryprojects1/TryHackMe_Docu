@@ -274,3 +274,6 @@ Bypassing Login Forms
 Suppose a developer has implemented authentication functionality in JS, where only users with the username "admin" and passwords matching a specific value are allowed to log in. To see this in action, open the login.html file in the exercises folder
 
 ow, we will try to minify and obfuscate the JS code using an online tool. Visit the website and copy the contents of hello.js, and paste them into the dialogue box on the website. The tool will minify and obfuscate the code, turning it into a string of gibberish characters
+Avoid Hardcoded Secrets
+
+Never hardcode sensitive data like API keys, access tokens, or credentials into your JS code, as the user can easily check the source code and get the password. 
