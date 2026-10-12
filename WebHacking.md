@@ -247,15 +247,10 @@ Controls what referrer information is sent with requests.
 - **strict-origin-when-cross-origin**: Similar to strict-origin except for same-origin requests, where it sends the full URL path.
 
 ---
+# JavaScript Essentials 
 
-## Summary
-
-Understanding web application basics is essential for security. Key takeaways:
-
-- Know the difference between frontend (HTML, CSS, JS) and backend (database, infrastructure, WAF).
-- Understand URL structure and how each component affects security.
-- HTTP messages follow a strict format: start line, headers, empty line, body.
-- HTTP methods have different purposes and security implications.
-- HTTP status codes tell you the outcome of your request.
-- Response headers provide crucial metadata and security directives.
-- Security headers like CSP, HSTS, and Referrer-Policy protect against common attacks.
+Function, A function represents a block of code designed to perform a specific task. 
+Loop, Loops allow you to run a code block multiple times as long as a condition is true
+Once Chrome is open, press Ctrl + Shift + I to open the Console or right-click anywhere on the page and select Inspect.
+hen, click on the Console tab. This console allows you to run JS code directly in the browser without installing additional software.
+Internal JS refers to embedding the JS code directly within an HTML document. This method is preferable for beginners because it allows them to see how the script interacts with the HTML.
