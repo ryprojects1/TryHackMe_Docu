@@ -261,3 +261,9 @@ External JS involves creating and storing JS code in a separate file ending with
 When pen-testing a web application, it is important to check whether the website uses internal or external JS. This can be easily verified by viewing the page's source code. To do this, open the page external_test.html located in the exercise folder in Chrome, right-click anywhere on the page, and select View Page Source.
 
 These functions allow developers to display messages, gather input, and obtain user confirmation. However, if not implemented securely, attackers may exploit these features to execute attacks like Cross-Site Scripting (XSS)
+
+How Hackers Exploit the Functionality
+
+Imagine receiving an email from a stranger with an attached HTML file. The file looks harmless, but when you open it, it contains JS that disrupts your browsing experience. For example, the following code will show an alert box with the message "Hacked" three times:
+
+
