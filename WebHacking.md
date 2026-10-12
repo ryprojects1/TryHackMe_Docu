@@ -247,33 +247,81 @@ Controls what referrer information is sent with requests.
 - **strict-origin-when-cross-origin**: Similar to strict-origin except for same-origin requests, where it sends the full URL path.
 
 ---
-# JavaScript Essentials 
+# JavaScript Essentials
 
-Function, A function represents a block of code designed to perform a specific task. 
-Loop, Loops allow you to run a code block multiple times as long as a condition is true
-Once Chrome is open, press Ctrl + Shift + I to open the Console or right-click anywhere on the page and select Inspect.
-hen, click on the Console tab. This console allows you to run JS code directly in the browser without installing additional software.
-Internal JS refers to embedding the JS code directly within an HTML document. This method is preferable for beginners because it allows them to see how the script interacts with the HTML.
+## Core Concepts
 
-External JavaScript
+| Term | Definition |
+|------|-----------|
+| **Function** | A block of code designed to perform a specific task |
+| **Loop** | Runs a code block multiple times as long as a condition is true |
+| **Conditional** | Executes different code blocks depending on whether a condition is true or false |
 
-External JS involves creating and storing JS code in a separate file ending with a .js file extension. This method helps developers keep the HTML document clean and organised. 
-When pen-testing a web application, it is important to check whether the website uses internal or external JS. This can be easily verified by viewing the page's source code. To do this, open the page external_test.html located in the exercise folder in Chrome, right-click anywhere on the page, and select View Page Source.
+---
 
-These functions allow developers to display messages, gather input, and obtain user confirmation. However, if not implemented securely, attackers may exploit these features to execute attacks like Cross-Site Scripting (XSS)
+## Running JavaScript in the Browser
 
-How Hackers Exploit the Functionality
+Open the browser console two ways:
+- `Ctrl + Shift + I` → Console tab
+- Right-click anywhere → Inspect → Console tab
 
-Imagine receiving an email from a stranger with an attached HTML file. The file looks harmless, but when you open it, it contains JS that disrupts your browsing experience. For example, the following code will show an alert box with the message "Hacked" three times:
+Lets you run JS directly without installing anything.
 
-Conditional Statements in Action
+---
 
-One of the most used conditional statements is the if-else statements, which allows you to execute different blocks of code depending on whether a condition evaluates to true or false.
-Bypassing Login Forms
+## Internal vs External JavaScript
 
-Suppose a developer has implemented authentication functionality in JS, where only users with the username "admin" and passwords matching a specific value are allowed to log in. To see this in action, open the login.html file in the exercises folder
+**Internal JS** — JS written directly inside an HTML file
+- Good for beginners, easier to see how script interacts with HTML
 
-ow, we will try to minify and obfuscate the JS code using an online tool. Visit the website and copy the contents of hello.js, and paste them into the dialogue box on the website. The tool will minify and obfuscate the code, turning it into a string of gibberish characters
-Avoid Hardcoded Secrets
+**External JS** — JS stored in a separate `.js` file, linked into HTML
+- Keeps HTML clean and organised
+- To check which a site uses: right-click → View Page Source
 
-Never hardcode sensitive data like API keys, access tokens, or credentials into your JS code, as the user can easily check the source code and get the password. 
+---
+
+## Dangerous JS Functions (XSS Risk)
+
+Functions like `alert()`, `prompt()`, and `confirm()` allow developers to display messages and gather input. If implemented insecurely, attackers can exploit these for **Cross-Site Scripting (XSS)** attacks.
+
+**Example — malicious HTML attachment:**
+```javascript
+// Shows "Hacked" alert 3 times
+for (let i = 0; i < 3; i++) {
+    alert("Hacked");
+}
+```
+
+---
+
+## Bypassing Login Forms
+
+If authentication logic is handled in JS (client-side), an attacker can read the source code and extract the credentials directly — no brute force needed.
+
+```javascript
+// Bad example — credentials visible in source
+if (username === "admin" && password === "secret123") {
+    // grant access
+}
+```
+
+> ⚠️ Never implement real authentication in client-side JavaScript.
+
+---
+
+## Obfuscation & Minification
+
+- **Minification** — removes whitespace and shortens variable names to reduce file size
+- **Obfuscation** — transforms readable code into gibberish to make it harder to reverse engineer
+- Attackers use online tools to deobfuscate JS and read hidden logic
+
+---
+
+## Security Best Practices
+
+| Rule | Why |
+|------|-----|
+| Never hardcode API keys or credentials | Users can view source code and extract them |
+| Don't handle authentication in JS | Client-side logic can be read and bypassed |
+| Sanitise all user input | Prevents XSS attacks via alert/prompt/confirm abuse |
+| Use external JS files | Easier to manage and audit |
