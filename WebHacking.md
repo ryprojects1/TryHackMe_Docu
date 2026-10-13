@@ -342,3 +342,7 @@ LIKE Operator
 The LIKE operator is commonly used in conjunction with clauses like WHERE in order to filter for specific patterns within a column.
 
 The BETWEEN operator allows us to test if a value exists within a defined range
+
+CONCAT() Function
+
+This function is used to add two or more strings together. It is useful to combine text from different columns.
