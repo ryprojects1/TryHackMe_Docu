@@ -332,3 +332,5 @@ Relational databases: Store structured data, meaning the data inserted into this
 Non-relational databases: Instead of storing data the above way, store data in a non-tabular format.
 Primary Keys: A primary key is used to ensure that the data collected in a certain column is unique. 
 Foreign Keys: A foreign key is a column (or columns) in a table that also exists in another table within the database, and therefore provides a link between the two tables
+
+SQL is a programming language that can be used to query, define and manipulate the data stored in a relational database.
