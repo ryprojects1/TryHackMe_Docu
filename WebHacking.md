@@ -340,3 +340,5 @@ The SHOW DATABASES statement will return a list of present databases.
 The HAVING clause is used with other clauses to filter groups or results of records based on a condition
 LIKE Operator
 The LIKE operator is commonly used in conjunction with clauses like WHERE in order to filter for specific patterns within a column.
+
+The BETWEEN operator allows us to test if a value exists within a defined range
