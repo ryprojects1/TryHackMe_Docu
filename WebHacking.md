@@ -325,3 +325,10 @@ if (username === "admin" && password === "secret123") {
 | Don't handle authentication in JS | Client-side logic can be read and bypassed |
 | Sanitise all user input | Prevents XSS attacks via alert/prompt/confirm abuse |
 | Use external JS files | Easier to manage and audit |
+
+
+# SQL Fundamentals
+Relational databases: Store structured data, meaning the data inserted into this database follows a structure
+Non-relational databases: Instead of storing data the above way, store data in a non-tabular format.
+Primary Keys: A primary key is used to ensure that the data collected in a certain column is unique. 
+Foreign Keys: A foreign key is a column (or columns) in a table that also exists in another table within the database, and therefore provides a link between the two tables
