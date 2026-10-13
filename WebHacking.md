@@ -334,3 +334,5 @@ Primary Keys: A primary key is used to ensure that the data collected in a certa
 Foreign Keys: A foreign key is a column (or columns) in a table that also exists in another table within the database, and therefore provides a link between the two tables
 
 SQL is a programming language that can be used to query, define and manipulate the data stored in a relational database.
+SQL is good because it is quick, easy to learn, reliable and flexible
+The SHOW DATABASES statement will return a list of present databases.
