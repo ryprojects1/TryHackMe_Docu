@@ -336,3 +336,5 @@ Foreign Keys: A foreign key is a column (or columns) in a table that also exists
 SQL is a programming language that can be used to query, define and manipulate the data stored in a relational database.
 SQL is good because it is quick, easy to learn, reliable and flexible
 The SHOW DATABASES statement will return a list of present databases.
+
+The HAVING clause is used with other clauses to filter groups or results of records based on a condition
