@@ -326,23 +326,56 @@ if (username === "admin" && password === "secret123") {
 | Sanitise all user input | Prevents XSS attacks via alert/prompt/confirm abuse |
 | Use external JS files | Easier to manage and audit |
 
-
 # SQL Fundamentals
-Relational databases: Store structured data, meaning the data inserted into this database follows a structure
-Non-relational databases: Instead of storing data the above way, store data in a non-tabular format.
-Primary Keys: A primary key is used to ensure that the data collected in a certain column is unique. 
-Foreign Keys: A foreign key is a column (or columns) in a table that also exists in another table within the database, and therefore provides a link between the two tables
 
-SQL is a programming language that can be used to query, define and manipulate the data stored in a relational database.
-SQL is good because it is quick, easy to learn, reliable and flexible
-The SHOW DATABASES statement will return a list of present databases.
+## Databases
 
-The HAVING clause is used with other clauses to filter groups or results of records based on a condition
-LIKE Operator
-The LIKE operator is commonly used in conjunction with clauses like WHERE in order to filter for specific patterns within a column.
+| Type | What it means |
+|---|---|
+| **Relational** | Stores structured data, meaning the data inserted into this database follows a structure (tables) |
+| **Non-relational** | Stores data in a non-tabular format instead |
 
-The BETWEEN operator allows us to test if a value exists within a defined range
+## Keys
 
-CONCAT() Function
+- **Primary Key** – used to ensure that the data collected in a certain column is unique.
+- **Foreign Key** – a column (or columns) in a table that also exists in another table within the database, and therefore provides a link between the two tables.
 
-This function is used to add two or more strings together. It is useful to combine text from different columns.
+## What is SQL?
+
+SQL is a programming language that can be used to **query**, **define** and **manipulate** the data stored in a relational database.
+
+SQL is good because it is:
+- Quick
+- Easy to learn
+- Reliable
+- Flexible
+
+```sql
+SHOW DATABASES;   -- returns a list of present databases
+```
+
+## Clauses & Operators
+
+| Keyword | What it does |
+|---|---|
+| `HAVING` | Used with other clauses to filter groups or results of records based on a condition |
+| `LIKE` | Commonly used with clauses like `WHERE` to filter for specific patterns within a column |
+| `BETWEEN` | Tests if a value exists within a defined range |
+
+## String Functions
+
+| Function | What it does |
+|---|---|
+| `CONCAT()` | Adds two or more strings together. Useful to combine text from different columns |
+| `GROUP_CONCAT()` | Concatenates data from multiple rows into one field |
+| `SUBSTRING()` | Retrieves a substring from a string within a query |
+| `LENGTH()` | Returns the number of characters in a string |
+
+## Aggregate Functions
+
+| Function | What it does |
+|---|---|
+| `COUNT()` | Returns the number of records within an expression |
+| `SUM()` | Sums all values (not `NULL`) of a determined column |
+| `MAX()` | Calculates the maximum value within a provided column in an expression |
+| `MIN()` | Calculates the minimum value within a provided column in an expression |
