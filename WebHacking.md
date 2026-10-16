@@ -380,29 +380,72 @@ SHOW DATABASES;   -- returns a list of present databases
 | `MAX()` | Calculates the maximum value within a provided column in an expression |
 | `MIN()` | Calculates the minimum value within a provided column in an expression |
 
-## Burp Suite: The Basics
-Burp Suite is a Java-based framework designed to serve as a comprehensive solution for conducting web application penetration testing. 
-Proxy: The Burp Proxy is the most renowned aspect of Burp Suite. It enables interception and modification of requests and responses while interacting with web applications.
-Repeater: Another well-known feature. Repeater allows for capturing, modifying, and resending the same request multiple times. This functionality is particularly useful when crafting payloads through trial and error (e.g., in SQLi - Structured Query Language Injection) or testing the functionality of an endpoint for vulnerabilities.
-Intruder: Despite rate limitations in Burp Suite Community, Intruder allows for spraying endpoints with requests. It is commonly utilized for brute-force attacks or fuzzing endpoints.
-Decoder: Decoder offers a valuable service for data transformation. It can decode captured information or encode payloads before sending them to the target. While alternative services exist for this purpose, leveraging Decoder within Burp Suite can be highly efficient.
-Comparer: As the name suggests, Comparer enables the comparison of two pieces of data at either the word or byte level. While not exclusive to Burp Suite, the ability to send potentially large data segments directly to a comparison tool with a single keyboard shortcut significantly accelerates the process.
-Sequencer: Sequencer is typically employed when assessing the randomness of tokens, such as session cookie values or other supposedly randomly generated data. If the algorithm used for generating these values lacks secure randomness, it can expose avenues for devastating attacks.
+# Burp Suite: The Basics
 
-Key Points to Understand About the Burp Proxy
-Intercepting Requests: When requests are made through the Burp Proxy, they are intercepted and held back from reaching the target server. The requests appear in the Proxy tab, allowing for further actions such as forwarding, dropping, editing, or sending them to other Burp modules. To disable the intercept and allow requests to pass through the proxy without interruption, click the Intercept is on button.
-Taking Control: The ability to intercept requests empowers testers to gain complete control over web traffic, making it invaluable for testing web applications.
+## What is Burp Suite?
+A Java-based framework for web application penetration testing. Acts as a proxy between your browser and the target server, letting you intercept, modify, and analyse web traffic.
 
-Capture and Logging: Burp Suite captures and logs requests made through the proxy by default, even when the interception is turned off. This logging functionality can be helpful for later analysis and review of prior requests.
+---
 
-WebSocket Support: Burp Suite also captures and logs WebSocket communication, providing additional assistance when analysing web applications.
+## Core Modules
 
-Logs and History: The captured requests can be viewed in the HTTP history and WebSockets history sub-tabs, allowing for retrospective analysis and sending the requests to other Burp modules as needed.
+| Module | What it does |
+|--------|-------------|
+| **Proxy** | Intercepts and modifies requests/responses between browser and server |
+| **Repeater** | Captures and resends requests multiple times — useful for SQLi and endpoint testing |
+| **Intruder** | Sprays endpoints with requests — used for brute-force and fuzzing (rate limited in Community) |
+| **Decoder** | Encodes/decodes data (Base64, URL encoding, etc.) |
+| **Comparer** | Compares two pieces of data at word or byte level |
+| **Sequencer** | Analyses randomness of tokens like session cookies — weak randomness = exploitable |
 
-The Target tab in Burp Suite provides more than just control over the scope of our testing. It consists of three sub-tabs:
+---
 
-Site map: This sub-tab allows us to map out the web applications we are targeting in a tree structure. Every page that we visit while the proxy is active will be displayed on the site map. This feature enables us to automatically generate a site map by simply browsing the web application. In Burp Suite Professional, we can also use the site map to perform automated crawling of the target, exploring links between pages and mapping out as much of the site as possible. Even with Burp Suite Community, we can still utilize the site map to accumulate data during our initial enumeration steps. It is particularly useful for mapping out APIs, as any API endpoints accessed by the web application will be captured in the site map.
+## Burp Proxy — Key Behaviours
 
-Issue definitions: Although Burp Community does not include the full vulnerability scanning functionality available in Burp Suite Professional, we still have access to a list of all the vulnerabilities that the scanner looks for. The Issue definitions section provides an extensive list of web vulnerabilities, complete with descriptions and references. This resource can be valuable for referencing vulnerabilities in reports or assisting in describing a particular vulnerability that may have been identified during manual testing.
+- **Intercept** — holds requests before they reach the server; view/edit/drop/forward them from the Proxy tab
+- **Toggle intercept** — click "Intercept is on" to let requests pass through without stopping
+- **Logging** — captures ALL requests by default even when intercept is off
+- **WebSocket support** — captures WebSocket traffic too
+- **History** — view past requests in HTTP history and WebSockets history sub-tabs
 
-Scope settings: This setting allows us to control the target scope in Burp Suite. It enables us to include or exclude specific domains/IPs to define the scope of our testing. By managing the scope, we can focus on the web applications we are specifically targeting and avoid capturing unnecessary traffic.
+---
+
+## Target Tab
+
+Three sub-tabs:
+
+**Site Map**
+- Tree structure of every page visited while proxy is active
+- Auto-builds as you browse — useful for mapping APIs
+- Pro version: automated crawling; Community: manual browsing only
+
+**Issue Definitions**
+- Full list of vulnerabilities Burp's scanner checks for
+- Includes descriptions and references
+- Useful for writing reports even in Community edition
+
+**Scope Settings**
+- Include/exclude specific domains or IPs
+- Keeps testing focused and avoids capturing irrelevant traffic
+
+---
+
+## Community vs Professional
+
+| Feature | Community | Professional |
+|---------|-----------|-------------|
+| Proxy | ✅ | ✅ |
+| Repeater | ✅ | ✅ |
+| Intruder | ✅ (rate limited) | ✅ (full speed) |
+| Scanner | ❌ | ✅ |
+| Automated crawler | ❌ | ✅ |
+| Issue definitions (read-only) | ✅ | ✅ |
+
+---
+
+## Key Security Concepts Covered
+
+- **SQLi (SQL Injection)** — Repeater is used to test and craft payloads
+- **Brute force / Fuzzing** — Intruder sprays endpoints with wordlists
+- **XSS / Web vulns** — Issue definitions references all common vulnerabilities
+- **Session token analysis** — Sequencer checks if tokens are truly random
