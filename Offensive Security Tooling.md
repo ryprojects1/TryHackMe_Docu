@@ -53,3 +53,19 @@ sudo hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.129.142.238 http-post
 ---
 
 > ⚠️ Only use on systems you have permission to test
+Enumeration
+
+Enumeration is the act of listing all the available resources, whether they are accessible or not. For example, Gobuster enumerates web directories.
+
+Brute Force
+
+Brute force is the act of trying every possibility until a match is found. It is like having ten keys and trying them all on a lock until one fits. Gobuster uses wordlists for this purpose.
+Usage: Shows the syntax on how to use the command.
+Available Commands: Multiple commands are available to aid us in enumerating directories, files, DNS subdomains, Google Cloud Storage buckets, and Amazon AWS S3 buckets. Throughout this room, we will focus on the dir, dns, and vhost commands. We will cover each of them in the following tasks.
+Flags: These are specific options we can configure to customize our commands. Let’s look at the flags we will often use throughout this room:
+Short Flag	Long Flag	Description
+-t	--threads	This flag configures the number of threads to use for the scan. Each of these threads sends out requests with a slight delay. The default number of threads is 10. This number may be slow when using large wordlists. You can increase or decrease the number of threads depending on the available system resources.
+-w	--wordlist	The flag configures a wordlist to use for iterating. Each wordlist entry is attached to the URL you included in the command.
+--delay	This flag defines the amount of time to wait between sending requests. Some web servers include mechanisms to detect enumeration by looking at how many requests are received in a certain period of time. We can increase the delay between subsequent requests to make it look like normal web traffic.
+--debug	This flag helps us to troubleshoot when our command gives unexpected errors.
+-o	--output	This flag writes the enumeration results to a file we choose.
