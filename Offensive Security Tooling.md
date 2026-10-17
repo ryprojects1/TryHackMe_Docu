@@ -106,3 +106,34 @@ This flag configures a custom DNS server to use for resolving.
 --domain
 
 This flag configures the domain you want to enumerate.
+ vhost mode. This mode allows Gobuster to brute force virtual hosts. Virtual hosts are different websites on the same machine.
+  vhost mode offers flags similar to those of the dir mode. Let us have a look at some of the commonly used flags:
+
+Short Flag	Long Flag	Description
+-u
+
+--url
+
+Specifies the base URL (target domain) for brute-forcing virtual hostnames.
+
+--append-domain
+
+Appends the base domain to each word in the wordlist (e.g., word.example.com).
+-m
+
+--method
+
+Specifies the HTTP method to use for the requests (e.g., GET, POST).
+
+--domain
+
+Appends a domain to each wordlist entry to form a valid hostname (useful if not provided explicitly).
+
+--exclude-length
+
+Excludes results based on the length of the response body (useful to filter out unwanted responses).
+-r
+
+--follow-redirect
+
+Follows HTTP redirects (useful for cases where subdomains may redirect).
