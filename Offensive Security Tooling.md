@@ -165,3 +165,9 @@ Rlwrap
 
 It is a small utility that uses the GNU readline library to provide editing keyboard and history.
 
+Socat
+It is a utility that allows you to create a socket connection between two data sources, in this case, two different hosts.
+A web shell is a script written in a language supported by a compromised web server that executes commands through the web server itself. A web shell is usually a file containing the code that executes commands and handles files. It can be hidden within a compromised web application or service, making it difficult to detect and very popular among attackers.
+p0wny-shell - A minimalistic single-file PHP web shell that allows remote command execution.
+b374k shell - A more feature-rich PHP web shell with file management and command execution, among other functionalities.
+c99 shell - A well-known and robust PHP web shell with extensive functionality
