@@ -210,11 +210,40 @@ exiftool photo.jpg
 
 ---
 
-## ✅ Key Takeaways
+## Incident Response Fundamentals
+False positive: A security solution raised an alert on a high amount of data being transferred from one system to an external IP address. Upon analyzing this alert, the security team found that the subject system was undergoing a backup process to a cloud storage service, which caused this. This is known as a false positive.
 
-- A SOC = **detect + respond**. L1/L2/L3 is an escalation ladder.
-- **SIEM** detects across the network, **EDR** detects *and* responds on endpoints, a **firewall** blocks at the network edge.
-- Forensics follows **Collection ➜ Examination ➜ Analysis ➜ Reporting**.
-- Never touch evidence without **authorisation**, and always keep a **chain of custody**.
-- Use **write blockers** so you don't accidentally change the evidence.
-- Grab the **memory image before the disk image**, because RAM disappears when the power goes.
+True Positive: A security solution raised an alert on a phishing attempt on one of the organization’s users. Upon analyzing this alert, the security team found that the email was a phishing email sent to this user to compromise the system. This is known as a true positive.
+
+There are several other types of incidents. These types can occur independently or altogether within the same victim.
+Malware Infections: Malware is a malicious program that can damage a system, network, or application. The majority of incidents are associated with malware infections.  There are different types of malware, each with a unique potential to cause damage.
+Security Breaches: Security Breaches arise when an unauthorized person gets access to confidential data (something we don’t want them to see or have).  
+Data Leaks: Data leaks are incidents in which confidential information of an individual or an organization is exposed to unauthorized entities. Many attackers use data leaks for reputational damage to their victims or use this technique to threaten their victims and get what they need from them. 
+Insider Attacks: Incidents from within an organization are known as insider attacks. Think about a disgruntled employee infecting the whole network through a USB on his last day. 
+Denial Of Service Attacks: Availability is one of the three pillars of cyber security. Defensive security solutions and people constantly find ways to protect information; they ensure that the data is available to the people simultaneously.
+The SANS incident Response framework has 6 phases, which can be called 'PICERL' to remember them easily.
+
+Phase	Explanation	Example
+Preparation	This is the first phase. The preparation phase includes building the necessary resources to handle an incident. These resources include developing incident response teams, having a proper incident response plan in place, and deploying necessary security solutions to combat the incidents.	Conducting awareness training for employees on phishing emails. Phishing emails are fraudulent emails sent by malicious attackers that can trick you into performing actions that can lead you to an incident.
+Identification	The identification phase refers to looking for any abnormal behavior that may indicate an incident. This involves using various security solutions and techniques to monitor abnormal events.	The security team notices a huge amount of data being sent out from one of the hosts. Upon analysis, it was found to be compromised after a malicious file was downloaded from a phishing email attachment.
+Containment	Once an incident has been identified, the next step should be to contain it. This means minimizing the impact of the attack. This is usually done by isolating the victim machine, disabling the compromised user accounts, etc.	The Security team isolates the host from the network to minimize the impact and not allow the attacker to jump to other systems, leveraging the compromised host.
+Eradication	This phase, as its name suggests, involves removing the threat from the attacked environment. The threat may be of any kind. The eradication phase will ensure the subject environment is clean, and now we can move to the recovery phase.	A deep malware scan was executed on the system to remove the malicious software from the host.
+Recovery	The recovery phase is very important in this chain. It involves recovering the affected systems from backup or rebuilding them. The recovered systems are then tested and are ready to use.	The compromised host was re-configured, and the exfiltrated data was restored from the backup.
+Lessons Learned	This is also an important part of the incident response lifecycle. Gaps in the detection and analysis of the incident are identified and documented, helping to improve the overall process in future incidents.	Conducting a post-incident review meeting to analyze the incident's root cause and improve the security to prevent future attacks.
+Organizations may derive their incident response processes by following these frameworks. Every process has a formal document listing all the relevant organizational procedures. The formal incident response document is called the Incident Response Plan. 
+SIEM: The Security Information and Event Management Solution (SIEM) collects all important logs in one centralized location and correlates them to identify incidents.
+AV: Antivirus (AV) detects known malicious programs in a system and regularly scans your system for these.
+EDR: Endpoint Detection and Response (EDR) is deployed on every system, protecting it against some advanced-level threats. This solution can also contain and eradicate the threat.
+Playbooks are the guidelines for a comprehensive incident response.
+
+Following is an example of a Playbook for an incident: Phishing Email
+
+Picture showing a playbook.
+
+Notify all the stakeholders of the phishing email incident
+Determine if the email was malicious by conducting header and body analysis of the email
+Look for any attachments with the email and analyze them
+Determine if anybody opened the attachments
+Isolate the infected systems from the network
+Block the email sender
+Runbooks, on the other hand, are the detailed, step-by-step execution of specific steps during different incidents. These steps may vary depending on the resources available for investigation.
