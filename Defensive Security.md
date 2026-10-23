@@ -247,3 +247,10 @@ Determine if anybody opened the attachments
 Isolate the infected systems from the network
 Block the email sender
 Runbooks, on the other hand, are the detailed, step-by-step execution of specific steps during different incidents. These steps may vary depending on the resources available for investigation.
+
+Use Case	Description
+Security Events Monitoring	Logs help us detect anomalous behavior when real-time monitoring is used.
+Incident Investigation and Forensics	Logs are the traces of every kind of activity. It offers detailed information on what happened during the incident. The security team utilizes the logs to perform root cause analysis of incidents.
+Troubleshooting	As the logs also record the errors in systems or applications, they can be used to diagnose issues and helpful in fixing them.
+Performance Monitoring	Logs can also provide valuable insights into the performance of applications.
+Auditing and Compliance	Logs play a major role in Auditing and Compliance, making it easier with its capability to establish a trail of different kinds of activities.
