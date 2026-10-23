@@ -289,3 +289,15 @@ Event ID	Description
 4722	A user account was enabled
 4725	A user account was disabled
 4726	A user account was deleted
+
+IP Address: “172.16.0.1” - The IP address of the user who made the request.
+
+Timestamp: “[06/Jun/2024:13:58:44]” - The time when the request was made to the website.
+
+Request: The request details.
+
+HTTP Method: “GET” - Tells the website what action to be performed on the request.
+URL: “/” - The requested resource.
+Status Code: “200” - The response from the server. Different numbers indicate different response results.
+
+User-Agent: “Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36” - Information about the user’s Operating System, browser, etc. when making the request.
