@@ -1,10 +1,11 @@
 # 🛡️ Defensive Security, SOC & Digital Forensics
 
-> TryHackMe notes. Covers what a SOC actually does, who does what, the main tools, and then the basics of digital forensics.
+> TryHackMe notes. Covers what a SOC actually does, who does what, the main tools, the basics of digital forensics, and then incident response + logs.
 
 ---
 
 ## 📑 Contents
+
 - [Part 1: Defensive Security & SOC](#part-1-defensive-security--soc)
   - [Core SOC Responsibilities](#core-soc-responsibilities)
   - [SOC Team Structure](#soc-team-structure)
@@ -19,6 +20,18 @@
   - [Write Blockers](#write-blockers)
   - [Forensic Images](#forensic-images-windows)
   - [Metadata Tools](#metadata-tools)
+- [Part 3: Incident Response Fundamentals](#part-3-incident-response-fundamentals)
+  - [True vs False Positives](#true-vs-false-positives)
+  - [Types of Incidents](#types-of-incidents)
+  - [SANS Framework (PICERL)](#sans-incident-response-framework-picerl)
+  - [Incident Response Plan](#incident-response-plan)
+  - [IR Tools](#incident-response-tools)
+  - [Playbooks vs Runbooks](#playbooks-vs-runbooks)
+- [Part 4: Logs](#part-4-logs)
+  - [Why Logs Matter](#why-logs-matter)
+  - [Log Types](#log-types)
+  - [Windows Event IDs](#important-windows-event-ids)
+  - [Reading a Web Server Log](#reading-a-web-server-access-log)
 - [Key Takeaways](#-key-takeaways)
 
 ---
@@ -39,6 +52,7 @@ A **SOC (Security Operations Centre)** is the team that watches an organisation'
 | **Intrusions** | Unauthorised access to systems or networks |
 
 ### 🚨 Response
+
 - Minimise the impact of detected incidents
 - Perform **root cause analysis** (work out *why* it happened, not just *what*)
 - Support the incident response team
@@ -77,17 +91,20 @@ A good incident report answers the **5 Ws**:
 ## Key SOC Tools
 
 ### 📊 SIEM (Security Information and Event Management)
+
 - Collects logs from multiple network devices (**log sources**)
 - Provides **detection** capabilities
 - Used in almost every SOC environment
 
 ### 💻 EDR (Endpoint Detection and Response)
+
 - Real-time **and** historical visibility of device activity
 - Operates at the **endpoint** level
 - Can carry out **automated responses**
 - Detailed investigation and response with a few clicks
 
 ### 🧱 Firewall
+
 - Barrier between internal and external networks
 - Monitors and filters incoming/outgoing traffic
 - Blocks suspicious traffic **before** it reaches the internal network
@@ -110,6 +127,7 @@ A good incident report answers the **5 Ws**:
 # Part 2: Digital Forensics Fundamentals
 
 **Forensics** = applying methods and procedures to investigate and solve crimes.
+
 **Digital forensics** = the branch that investigates **cyber crime**, meaning any criminal activity carried out on or using a digital device.
 
 ---
@@ -146,7 +164,7 @@ Collection ➜ Examination ➜ Analysis ➜ Reporting
 
 ## Authorization
 
-⚠️ The forensics team must get **authorisation from the relevant authorities before collecting any data**.
+> ⚠️ The forensics team must get **authorisation from the relevant authorities before collecting any data**.
 
 - Evidence collected without approval may be **inadmissible in court**
 - Forensic evidence contains private and sensitive data, so authorisation keeps the investigation within the law
@@ -175,7 +193,7 @@ A **write blocker** sits in between and **blocks any action that would alter the
 
 ```
 Suspect Drive ──▶ [ WRITE BLOCKER ] ──▶ Forensic Workstation
-                  (read ✅ / write ❌)
+                   (read ✅ / write ❌)
 ```
 
 ---
@@ -210,94 +228,163 @@ exiftool photo.jpg
 
 ---
 
-## Incident Response Fundamentals
-False positive: A security solution raised an alert on a high amount of data being transferred from one system to an external IP address. Upon analyzing this alert, the security team found that the subject system was undergoing a backup process to a cloud storage service, which caused this. This is known as a false positive.
+# Part 3: Incident Response Fundamentals
 
-True Positive: A security solution raised an alert on a phishing attempt on one of the organization’s users. Upon analyzing this alert, the security team found that the email was a phishing email sent to this user to compromise the system. This is known as a true positive.
+## True vs False Positives
 
-There are several other types of incidents. These types can occur independently or altogether within the same victim.
-Malware Infections: Malware is a malicious program that can damage a system, network, or application. The majority of incidents are associated with malware infections.  There are different types of malware, each with a unique potential to cause damage.
-Security Breaches: Security Breaches arise when an unauthorized person gets access to confidential data (something we don’t want them to see or have).  
-Data Leaks: Data leaks are incidents in which confidential information of an individual or an organization is exposed to unauthorized entities. Many attackers use data leaks for reputational damage to their victims or use this technique to threaten their victims and get what they need from them. 
-Insider Attacks: Incidents from within an organization are known as insider attacks. Think about a disgruntled employee infecting the whole network through a USB on his last day. 
-Denial Of Service Attacks: Availability is one of the three pillars of cyber security. Defensive security solutions and people constantly find ways to protect information; they ensure that the data is available to the people simultaneously.
-The SANS incident Response framework has 6 phases, which can be called 'PICERL' to remember them easily.
+Not every alert is an actual attack. Working out which is which is a huge part of L1's job.
 
-Phase	Explanation	Example
-Preparation	This is the first phase. The preparation phase includes building the necessary resources to handle an incident. These resources include developing incident response teams, having a proper incident response plan in place, and deploying necessary security solutions to combat the incidents.	Conducting awareness training for employees on phishing emails. Phishing emails are fraudulent emails sent by malicious attackers that can trick you into performing actions that can lead you to an incident.
-Identification	The identification phase refers to looking for any abnormal behavior that may indicate an incident. This involves using various security solutions and techniques to monitor abnormal events.	The security team notices a huge amount of data being sent out from one of the hosts. Upon analysis, it was found to be compromised after a malicious file was downloaded from a phishing email attachment.
-Containment	Once an incident has been identified, the next step should be to contain it. This means minimizing the impact of the attack. This is usually done by isolating the victim machine, disabling the compromised user accounts, etc.	The Security team isolates the host from the network to minimize the impact and not allow the attacker to jump to other systems, leveraging the compromised host.
-Eradication	This phase, as its name suggests, involves removing the threat from the attacked environment. The threat may be of any kind. The eradication phase will ensure the subject environment is clean, and now we can move to the recovery phase.	A deep malware scan was executed on the system to remove the malicious software from the host.
-Recovery	The recovery phase is very important in this chain. It involves recovering the affected systems from backup or rebuilding them. The recovered systems are then tested and are ready to use.	The compromised host was re-configured, and the exfiltrated data was restored from the backup.
-Lessons Learned	This is also an important part of the incident response lifecycle. Gaps in the detection and analysis of the incident are identified and documented, helping to improve the overall process in future incidents.	Conducting a post-incident review meeting to analyze the incident's root cause and improve the security to prevent future attacks.
-Organizations may derive their incident response processes by following these frameworks. Every process has a formal document listing all the relevant organizational procedures. The formal incident response document is called the Incident Response Plan. 
-SIEM: The Security Information and Event Management Solution (SIEM) collects all important logs in one centralized location and correlates them to identify incidents.
-AV: Antivirus (AV) detects known malicious programs in a system and regularly scans your system for these.
-EDR: Endpoint Detection and Response (EDR) is deployed on every system, protecting it against some advanced-level threats. This solution can also contain and eradicate the threat.
-Playbooks are the guidelines for a comprehensive incident response.
+| Type | Example |
+|---|---|
+| ❌ **False positive** | Alert fires on a big data transfer from a system to an external IP. Turns out it was just a scheduled backup to cloud storage. Alert fired, but nothing bad happened. |
+| ✅ **True positive** | Alert fires on a phishing attempt against a user. Analysis confirms it really was a phishing email trying to compromise the system. |
 
-Following is an example of a Playbook for an incident: Phishing Email
+> 💡 Too many false positives = alert fatigue, and that's how real attacks get missed.
 
-Picture showing a playbook.
+---
 
-Notify all the stakeholders of the phishing email incident
-Determine if the email was malicious by conducting header and body analysis of the email
-Look for any attachments with the email and analyze them
-Determine if anybody opened the attachments
-Isolate the infected systems from the network
-Block the email sender
-Runbooks, on the other hand, are the detailed, step-by-step execution of specific steps during different incidents. These steps may vary depending on the resources available for investigation.
+## Types of Incidents
 
-Use Case	Description
-Security Events Monitoring	Logs help us detect anomalous behavior when real-time monitoring is used.
-Incident Investigation and Forensics	Logs are the traces of every kind of activity. It offers detailed information on what happened during the incident. The security team utilizes the logs to perform root cause analysis of incidents.
-Troubleshooting	As the logs also record the errors in systems or applications, they can be used to diagnose issues and helpful in fixing them.
-Performance Monitoring	Logs can also provide valuable insights into the performance of applications.
-Auditing and Compliance	Logs play a major role in Auditing and Compliance, making it easier with its capability to establish a trail of different kinds of activities.
+These can happen on their own or all at once to the same victim.
 
-Log Type	Usage	Example
-System Logs	The system logs can be helpful in troubleshooting running issues in the OS. These logs provide information on various operating system activities.	- System Startup and shutdown events
-- Driver Loading events
-- System Error events
-- Hardware events
-Security Logs	The security logs help detect and investigate incidents. These logs provide information on the security-related activities in the system.	-Authentication events
-- Authorization events
-- Security Policy changes events
-- User Account changes events - Abnormal Activity events
-Application Logs	The application logs contain specific events related to the application. Any interactive or non-interactive activity happening inside the application will be logged here.	- User Interaction events
-- Application Changes events
-- Application Update events
-- Application Error events
-Audit Logs	The Audit logs provide detailed information on the system changes and user events. These logs are helpful for compliance requirements and can play a vital role in security monitoring as well.	- Data Access events
-- System Change events
-- User Activity events
-- Policy Enforcement events
-Network Logs	Network logs provide information on the network’s outgoing and incoming traffic. They play crucial roles in troubleshooting network issues and can also be handy during incident investigations.	- Incoming Network Traffic events
-- Outgoing Network Traffic events
-- Network Connection Logs - Network Firewall Logs
-Access Logs	The Access logs provide detailed information about the access to different resources. These resources can be of different types, providing us with information on their access.	- Webserver Access Logs
-- Database Access Logs - Application Access Logs
-- API Access Logs
-Here is a table of some important Event IDs in Windows Operating System.
+| Incident | What it is |
+|---|---|
+| **Malware infection** | A malicious program that damages a system, network or app. Most incidents involve malware in some way. |
+| **Security breach** | An unauthorised person gets access to confidential data |
+| **Data leak** | Confidential info gets exposed to unauthorised people. Often used for reputational damage or to threaten/extort the victim. |
+| **Insider attack** | The attack comes from *inside* the organisation, e.g. a disgruntled employee plugging in an infected USB on their last day |
+| **Denial of Service (DoS)** | Attacks **availability** (one of the CIA triad), flooding a system so legit users can't use it |
 
-Event ID	Description
-4624	A user account successfully logged in
-4625	A user account failed to login
-4634	A user account successfully logged off
-4720	A user account was created
-4724	An attempt was made to reset an account’s password
-4722	A user account was enabled
-4725	A user account was disabled
-4726	A user account was deleted
+---
 
-IP Address: “172.16.0.1” - The IP address of the user who made the request.
+## SANS Incident Response Framework (PICERL)
 
-Timestamp: “[06/Jun/2024:13:58:44]” - The time when the request was made to the website.
+SANS splits incident response into 6 phases. Easy way to remember: **PICERL**.
 
-Request: The request details.
+```
+Preparation ➜ Identification ➜ Containment ➜ Eradication ➜ Recovery ➜ Lessons Learned
+```
 
-HTTP Method: “GET” - Tells the website what action to be performed on the request.
-URL: “/” - The requested resource.
-Status Code: “200” - The response from the server. Different numbers indicate different response results.
+| Phase | What happens | Example |
+|---|---|---|
+| **P**reparation | Build everything you need *before* an incident: IR team, IR plan, security tools deployed | Phishing awareness training for employees |
+| **I**dentification | Look for abnormal behaviour that might be an incident, using monitoring tools | Huge amount of data leaving a host. Analysis shows it was compromised by a malicious attachment from a phishing email. |
+| **C**ontainment | Stop it spreading and minimise the impact: isolate machines, disable compromised accounts | Isolate the host from the network so the attacker can't pivot to other systems |
+| **E**radication | Remove the threat completely so the environment is clean | Run a deep malware scan to remove the malicious software |
+| **R**ecovery | Restore systems from backup or rebuild them, test them, put them back in use | Reconfigure the host and restore exfiltrated data from backup |
+| **L**essons Learned | Find and document the gaps in detection/response so next time goes better | Post-incident review meeting to find the root cause and improve security |
 
-User-Agent: “Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36” - Information about the user’s Operating System, browser, etc. when making the request.
+---
+
+## Incident Response Plan
+
+Organisations build their IR process from frameworks like SANS. The formal document listing all those procedures is called the **Incident Response Plan (IRP)**.
+
+---
+
+## Incident Response Tools
+
+| Tool | What it does |
+|---|---|
+| **SIEM** | Collects all important logs in one central place and **correlates** them to spot incidents |
+| **AV (Antivirus)** | Detects **known** malicious programs and regularly scans the system for them |
+| **EDR** | Deployed on every endpoint, protects against more advanced threats, and can **contain and eradicate** them |
+
+> 💡 AV = known bad stuff (signatures). EDR = behaviour + response. That's why EDR catches things AV misses.
+
+---
+
+## Playbooks vs Runbooks
+
+| | Playbook | Runbook |
+|---|---|---|
+| **What** | High-level guidelines for handling a type of incident | Detailed, step-by-step execution of specific steps |
+| **Level** | *What* to do | *How* exactly to do it |
+| **Varies by** | Incident type | Resources/tools available |
+
+### 📘 Example Playbook: Phishing Email
+
+1. Notify all stakeholders of the phishing incident
+2. Analyse the email header and body to decide if it's malicious
+3. Look for attachments and analyse them
+4. Check if anyone opened the attachments
+5. Isolate infected systems from the network
+6. Block the sender
+
+---
+
+# Part 4: Logs
+
+## Why Logs Matter
+
+| Use Case | Description |
+|---|---|
+| **Security events monitoring** | With real-time monitoring, logs help detect anomalous behaviour |
+| **Incident investigation & forensics** | Logs are traces of every activity, so they show what happened during an incident. Used for root cause analysis. |
+| **Troubleshooting** | Logs record system/app errors, which helps diagnose and fix issues |
+| **Performance monitoring** | Insight into how applications are performing |
+| **Auditing & compliance** | Logs create a trail of activity, which makes audits and compliance way easier |
+
+---
+
+## Log Types
+
+| Log Type | Used For | Example Events |
+|---|---|---|
+| **System logs** | Troubleshooting OS issues | Startup/shutdown, driver loading, system errors, hardware events |
+| **Security logs** | Detecting and investigating incidents | Authentication, authorisation, security policy changes, user account changes, abnormal activity |
+| **Application logs** | Events inside a specific app | User interaction, app changes, app updates, app errors |
+| **Audit logs** | System changes and user events; compliance + security monitoring | Data access, system changes, user activity, policy enforcement |
+| **Network logs** | Incoming/outgoing traffic; network troubleshooting + investigations | Incoming/outgoing traffic, connection logs, firewall logs |
+| **Access logs** | Who accessed which resources | Web server, database, application and API access logs |
+
+---
+
+## Important Windows Event IDs
+
+| Event ID | Description |
+|---|---|
+| `4624` | A user account successfully logged in |
+| `4625` | A user account failed to log in |
+| `4634` | A user account successfully logged off |
+| `4720` | A user account was created |
+| `4722` | A user account was enabled |
+| `4724` | An attempt was made to reset an account's password |
+| `4725` | A user account was disabled |
+| `4726` | A user account was deleted |
+
+> 🔗 **Home lab link:** loads of `4625`s in a row from the same source is basically the Windows version of the failed SSH logins I see in `auth.log`. Brute force pattern.
+
+---
+
+## Reading a Web Server Access Log
+
+Example entry:
+
+```
+172.16.0.1 - - [06/Jun/2024:13:58:44] "GET / HTTP/1.1" 200 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+```
+
+| Field | Value | Meaning |
+|---|---|---|
+| **IP address** | `172.16.0.1` | Who made the request |
+| **Timestamp** | `[06/Jun/2024:13:58:44]` | When the request was made |
+| **HTTP method** | `GET` | What action the server should perform |
+| **URL** | `/` | The resource being requested |
+| **Status code** | `200` | Server's response (200 = OK; different numbers = different results) |
+| **User-Agent** | `Mozilla/5.0 (Macintosh…) Chrome/58…` | Info about the user's OS, browser, etc. |
+
+---
+
+# 🔑 Key Takeaways
+
+- A SOC is all about **detection + response**, with L1 → L2 → L3 as an escalation ladder
+- **SIEM** detects (logs), **EDR** detects + responds (endpoint), **firewall** blocks (network)
+- Forensics follows NIST: **Collection → Examination → Analysis → Reporting**
+- No authorisation = evidence might be useless in court
+- **Chain of custody** + **write blockers** keep evidence trustworthy
+- **Memory image before disk image**, because RAM is volatile
+- Incident response follows **PICERL**: Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned
+- Not every alert is real: know your **true vs false positives**
+- **Playbook** = what to do, **runbook** = exactly how
+- Logs are the evidence trail for everything. Know your log types and key Windows Event IDs (`4624`, `4625` especially)
