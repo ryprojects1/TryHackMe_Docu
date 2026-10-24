@@ -55,3 +55,36 @@ Top Domains Visited
 /var/log/cron: Events related to cron jobs are stored in this location.
 /var/log/auth.log and /var/log/secure: Stores authentication-related logs.
 /var/log/kern: This file stores kernel-related events.
+
+Agent / Forwarder
+These SIEM solutions provide a lightweight tool called an agent (forwarder by Splunk) that gets installed on the Endpoint. It is configured to capture and send all the important logs to the SIEM server.
+Syslog
+Syslog is a widely used protocol to collect data from various systems like web servers, databases, etc., and send real-time data to the centralized destination.
+Manual Upload
+Some SIEM solutions, like Splunk, ELK, etc., allow users to ingest offline data for quick analysis. Once the data is ingested, it is normalized and made available for analysis.
+Port-Forwarding
+SIEM solutions can also be configured to listen on a certain port, and then the endpoints forward the data to the SIEM instance on the listening port.
+How is a detection rule created?
+To explain how the rule works, consider the following Eventlog use cases:
+
+Use-Case 1:
+Adversaries tend to remove the logs during the post-exploitation phase to remove their tracks. A unique Event ID 104 is logged every time a user tries to remove or clear event logs. To create a rule based on this activity, we can set the condition as follows:
+
+Rule: If the Log source is WinEventLog AND EventID is 104 - Trigger an alert Event Log Cleared
+
+Use-Case 2:
+Adversaries use commands like whoami after the exploitation/privilege escalation phase. The following Fields will be helpful to include in the rule.
+
+Log source: Identify the log source capturing the event logs
+Event ID: Which Event ID is associated with Process Execution activity? In this case, Event ID 4688 will be helpful.
+NewProcessName: Which process name will be helpful to include in the rule?
+Rule: If Log Source is WinEventLog AND EventCode is 4688, and NewProcessName contains whoami, then Trigger an ALERT WHOAMI command Execution DETECTED
+
+Alert Investigation
+When monitoring SIEM, analysts spend most of their time on dashboards, as they display various key details about the network in a very summarized way. Once an alert is triggered, the events/flows associated with the alert are examined, and the rule is checked to see which conditions are met. Based on the investigation, the analyst determines if it's a True or False positive. Some of the actions that are performed after the analysis are:
+
+Alert is a False Positive. It may require tuning the rule to avoid similar False positives from occurring again.
+Alert is a True Positive. Perform further investigation.
+Contact the asset owner to inquire about the activity.
+Suspicious activity is confirmed. Isolate the infected host.
+Block the suspicious IP.
