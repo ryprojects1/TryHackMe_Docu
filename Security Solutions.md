@@ -242,3 +242,29 @@ alert icmp any any -> $HOME_NET any (msg:"Ping Detected"; sid:10001; rev:1;)
 | `msg` | Message shown when alert fires |
 | `sid` | Unique signature ID for the rule |
 | `rev` | Revision number — increments each time rule is modified |
+
+# Vulnerability Scanner Overview
+Authenticated vs. Unauthenticated Scans
+Authenticated scans require the subject host's credentials and are more detailed than unauthenticated scans. These types of scans are helpful for discovering the threat surface within the host. However, unauthenticated scans are conducted without providing any credentials of the subject host. These scans help identify the threat surface from outside the host.
+
+Authenticated Scans	Unauthenticated Scans
+The credentials of the subject host must be provided to the vulnerability scanner.	The vulnerability scanner does not require the host’s credentials; it only needs the IP address.
+Identifies the vulnerabilities that can be exploited by the attackers having access to the host.	Identifies the vulnerabilities that can be exploited by an external attacker having no access to the subject host.
+It provides a deeper visibility into the target system by scanning its configuration and installed applications.	It is less resource-intensive and straightforward to set up.
+For example, scanning an internal database by providing its credentials to the vulnerability scanner.	For example, scanning a public-facing website for vulnerabilities that any user can exploit.
+Internal vs. External Scans
+Internal scans are conducted from inside the network, while external scans are conducted from outside the network. Let's see a few of their differences below.
+
+Internal Scans	External Scans
+Conducted from inside the network.	Conducted from outside the network.
+It focuses on the vulnerabilities that can be exploited inside the network.	It focuses on the vulnerabilities that can be exploited from outside the network.
+Identifies vulnerabilities that would be exposed to the attackers once they get inside the network.	Identifies the vulnerabilities exposed to the attacker from outside the network.
+CVE
+CVE stands for Common Vulnerabilities and Exposures. Consider CVE a unique number for each of your inquiries and complaints. If there is any update to any issue, you can easily follow up on that using the unique CVE number. Coming out of the help desk example scenario, this CVE number is a unique number given to vulnerabilities. This was developed by the MITRE Corporation. Whenever a new vulnerability is discovered in any software application, it is given a unique CVE number as a reference and published online in a CVE database. This publication aims to make people aware of these vulnerabilities so they can apply protective measures to remediate them. You can find the details of any previously discovered vulnerability in the CVE database. 
+CVSS
+CVSS stands for Common Vulnerability Scoring System. If we return to the help desk example again, you would always need to prioritize the complaints. The most efficient way to prioritize the complaints is by their severity level. What if all your complaints are registered with a score ranging from 0 to 10, where a higher score indicates a more severe complaint? This would resolve the problem of prioritizing critical complaints. This is called a CVSS score. In the computing world, just as each vulnerability has a CVE number that uniquely identifies it, each has a CVSS score that tells you its severity. The CVSS score is calculated by considering multiple factors, including its impact, ease of exploitability, etc. 
+CVSS Score Range	Severity Levels
+0.0-3.9	Low
+4.0-6.9	Medium
+7.0-8.9	High
+9.0-10	Critical
