@@ -115,3 +115,19 @@ The -Uri Specifies the URL of the web resource you want to retrieve. In our case
 The -OutFile specifies the local file where the downloaded content will be saved.  In this case, the Doc-3737122pdf.exe will be saved to $TempFile.
 The Start-Process is used to execute the downloaded file that is stored in $TempFile after the web request.
 To summarize, when the document agenttesla.xlsm is opened, a Macro will run! This Macro contains a VBA script. The script will run and will be running a PowerShell to download a file named Doc-3737122pdf.exe from http://193.203.203.67/rt/, save it to a variable $TempFile, then execute or start running the file inside this variable, which is a binary or a .exe file (Doc-3737122pdf.exe). This is a usual technique used by threat actors to avoid early detection. Pretty nasty, right?!
+Here are some of the parameters or plugins we will use. We will focus on Windows plugins.
+
+windows.pstree.PsTree
+windows.pslist.PsList
+windows.cmdline.CmdLine
+windows.filescan.FileScan
+windows.dlllist.DllList
+windows.malfind.Malfind
+windows.psscan.PsScan
+
+Let’s break this command down, shall we?
+
+We created a variable named $plugin with values of each volatility plugin
+Then ran vol3 parameters -q, which means quiet mode or does not show the progress in the terminal
+And -f, which means read from the memory capture.
+The plugin > wcry.plugin.done; means run volatility with the plugins and output it to a file with wcry at the beginning of the text, followed by the name of the plugins and with an extension of .txt. Repeat until the value of variable $plugin is used.
