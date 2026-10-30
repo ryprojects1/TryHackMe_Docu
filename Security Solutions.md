@@ -101,3 +101,17 @@ CAPA groups rules by purpose using namespaces.
 |-----------|-----------|----------------|
 | `anti-analysis/anti-vm/vm-detection` | `reference-anti-vm-strings-targeting-virtualbox.yml` | Malware searching for VMware registry keys or VM tools |
 | `anti-analysis/obfuscation` | `obfuscated-with-dotfuscator.yml` | String encryption, code obfuscation, packing, anti-debugging |
+
+# REMnux
+Oledump.py is a Python tool that analyzes OLE2 files, commonly called Structured Storage or Compound File Binary Format. OLE stands for Object Linking and Embedding, a proprietary technology developed by Microsoft. OLE2 files are typically used to store multiple data types, such as documents, spreadsheets, and presentations, within a single file. This tool is handy for extracting and examining the contents of OLE2 files, making it a valuable resource for forensic analysis and malware detection.
+Based on OleDump's file analysis, a VBA script might be embedded in the document and found inside xl/vbaProject.bin. Therefore, oledump will assign this with an index of A, though this can sometimes differ. The A (index) +Numbers are called data streams. 
+Let's run the command oledump.py agenttesla.xlsm -s 4. This command will run the oledump and look into the actual data stream of interest using the parameter -s 4,  wherein the -s parameter is short for -select  and the number four(4) as the data stream of interest is in the 4th place(A4: M 688 'VBA/ThisWorkbook')
+Let's break it down!
+
+So, in PowerShell, running the -WindowStyle parameter allows you to control how the PowerShell window appears when executing a script or command. In this case, hidden means that the PowerShell window won’t be visible to the user.
+By default, PowerShell restricts script execution for security reasons. The -executionpolicy parameter allows you to override this policy. The bypass means that the execution policy is temporarily ignored, allowing any script to run without restriction.
+The Invoke-WebRequest is commonly used for downloading files from the internet.
+The -Uri Specifies the URL of the web resource you want to retrieve. In our case, the script is downloading the resource Doc-3737122pdf.exe from http://193.203.203.67/rt/.
+The -OutFile specifies the local file where the downloaded content will be saved.  In this case, the Doc-3737122pdf.exe will be saved to $TempFile.
+The Start-Process is used to execute the downloaded file that is stored in $TempFile after the web request.
+To summarize, when the document agenttesla.xlsm is opened, a Macro will run! This Macro contains a VBA script. The script will run and will be running a PowerShell to download a file named Doc-3737122pdf.exe from http://193.203.203.67/rt/, save it to a variable $TempFile, then execute or start running the file inside this variable, which is a binary or a .exe file (Doc-3737122pdf.exe). This is a usual technique used by threat actors to avoid early detection. Pretty nasty, right?!
