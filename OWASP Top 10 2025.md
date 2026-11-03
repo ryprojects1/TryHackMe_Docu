@@ -29,3 +29,5 @@ Good logging underpins accountability (being able to prove who did what, when, a
 - No alerting on brute-force or privilege changes
 - Short retention
 - Logs stored where attackers can tamper with them
+
+# OWASP Top 10 2025: Application Design Flaws
