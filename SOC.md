@@ -69,3 +69,14 @@ If the True Positive alert requires additional actions or deeper investigation, 
 
 Communication
 You may also need to communicate with other departments during or after the analysis. For example, ask the IT team if they confirm granting administrative privileges to some users or contact HR to get more information about the newly hired employee
+
+Alert Report Purpose	Explanation
+Provide context for escalation	
+A well-written report saves lots of time for L2 analysts
+Also, it helps them quickly understand what happened
+Save findings for the records	
+Raw SIEM logs are stored for 3-12 months, but alerts are kept indefinitely
+As a result, it's better to keep all the context inside the alert, just in case
+Improve investigation skills	
+If you can't explain it simply, you don't understand it well enough
+Report writing is a great way to boost L1 skills by summarising alerts
