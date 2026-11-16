@@ -176,3 +176,10 @@ Step #4	Typically, AVs will not detect obfuscated PowerShell scripts	Flags the o
 Step #5	Will not flag malicious injection into svchost.exe since it does not monitor the memory injections	Detects Process Injection in svchost.exe
 Step #6	Lacks Network Level Visibility	Flags the unexpected behaviour of svchost.exe, making an outbound connection
 Final Action	May be marked as clean	Generates an alert with the full attack chain and enables the analyst to take actions from within the EDR
+
+Agents
+We can integrate multiple endpoints with our EDR and manage them through a centralized console. There are EDR agents that we have to deploy inside those endpoints. These agents are also sometimes referred to as sensors. They are the eyes and ears of the EDR. Their job is to sit at the endpoint and monitor all the activities. The information about these activities is sent in detail to the EDR central console in real time. The EDR agents can do some basic signature-based and behavior-based detections by themselves and send them to the EDR console, which triggers alerts.
+
+EDR Console
+All the detailed data sent by the EDR agents is correlated and analyzed through complex logic and machine learning algorithms. The threat intelligence information is matched with the collected data. The EDR is just like the brain connecting all the dots. These dots connect to form a detection, often called an alert. 
+
