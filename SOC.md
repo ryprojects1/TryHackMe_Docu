@@ -192,3 +192,13 @@ As a SOC Analyst, it is essential to understand that although a standalone EDR p
 What is Telemetry?
 In the previous task, we learned about EDR agents, which collect different data from their endpoints and push it to the EDR console. This data is known as Telemetry. Telemetry is the black box of an endpoint with everything necessary for detection and investigation.
 
+Process Executions and Terminations
+It keeps track of all the running and idle processes, which helps to identify suspicious child-parent process relationships, suspicious executables initiating a process, malware payload, etc.
+Network Connections
+All the endpoints' network connections are monitored, which helps identify any connection to a C2 server, unusual port usage, data exfiltration, or lateral movement within the network.
+Command Line Activity
+It captures all the commands executed on the endpoints in CMD, PowerShell, etc., which helps to identify malicious command execution, obfuscated PowerShell script executions, which are often missed by a traditional antivirus.
+Files and Folders Modifications
+Threat actors modify different files and folders during data staging, ransomware executions, and malicious file dropping. The EDR tracks this.
+Registry Modifications
+The registry is a goldmine of information about the configurations in a Windows system. There are many registry modifications that occur during a malicious activity, and most of these are monitored by the EDR.
