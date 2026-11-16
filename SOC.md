@@ -143,3 +143,36 @@ over 4 hours	SOC team can't stop the breach in time. Try to:
 
 1. As L1, make everything possible to quickly escalate the threats to L2
 2. Ensure your team has documented what to do during different attack scenarios
+
+Visibility 
+A good analysis often depends on the available level of visibility of the activity. This is one of the features of EDR that makes it unique from other endpoint security solutions. The level of visibility EDR provides is impressive. It collects detailed data from the endpoints, which includes process modifications, registry modifications, file and folder modifications, user actions, and much more. It then presents this information in a very structured format to the analyst. The analyst can see the whole process tree with a complete activity timeline of the sequence of actions. The analyst can also access the historical data of any endpoint for threat hunting or any other purpose. Any detections in the EDR land with a whole context.
+
+Process Modifications	Registry Modifications	File And Folder Modifications	User Actions	And Much More
+Detection 
+The detection feature of EDR wins over traditional detection capabilities. It incorporates signature-based detections as well as behavior-based detections, such as unexpected user activities. With modern machine learning capabilities, it identifies any deviation from the baseline behavior and instantly flags it. It can also detect fileless malware that resides in memory. It also allows us to feed custom IOCs for threat detections.
+
+Response 
+EDR also empowers analysts to take action on detected threats. These actions can be taken at any endpoint within the central EDR console. Imagine getting a detection on the EDR with full-fledged details on when, where, and what happened, and you have to opt for the best possible action for that detection. As an analyst, you may decide to isolate a complete endpoint, terminate a process, or quarantine some files. You can also connect to the host remotely and execute actions independently. You can do this all from within the EDR console.
+
+Why do we need an EDR when we already have an Antivirus (AV) on the endpoints?
+Both of these security solutions have the same motive of protecting the endpoint on which they are installed. However, both differ in the level of protection they provide. Let's assume an airport is an endpoint that needs protection. One layer of protection is to check the passports of people when they pass through immigration. The immigration check (AV) monitors incoming people and matches their passports with a list of known criminals in its database. If there is a match, the entry is blocked and caught. 
+
+Sounds like a smart protection, right?
+
+But, what happens if somebody who has never been identified as a criminal in the past and has an innocent personality tries to come in? The immigration check will let them in. Now, what if this innocent person were a professional thief trained to evade basic security? The airport has an undetected threat inside!
+
+This is where an EDR comes in.
+
+An EDR in this analogy would be the security officers stationed inside the airport (endpoint). These security officers would constantly monitor the security cameras and motion sensors in the airport (endpoint). Compared to the immigration check (AV), the security officers (EDR) enhance the protection of the airport (endpoint) through CCTV monitoring and motion sensors. Even if somebody manages to evade the immigration check, the security officers will constantly be monitoring their actions, such as:
+
+Are they roaming close to restricted areas?
+Is their behaviour suspicious?
+Are they leaving their bags somewhere unattended?
+Attack Steps	AV's Response	EDR's Response
+Step #1	Does nothing if the downloaded file has no previous signature in the database	Logs the file download activity and monitors it
+Step #2	Does nothing upon the opening of the document since winword.exe is a legitimate utility	Records the execution of winword.exe and keeps monitoring
+Step #3	Does nothing if the executed macro has no previous signature	Detects and flags the macro execution due to the unusual parent-child relationship of winword.exe and PowerShell.exe processes
+Step #4	Typically, AVs will not detect obfuscated PowerShell scripts	Flags the obfuscated script execution
+Step #5	Will not flag malicious injection into svchost.exe since it does not monitor the memory injections	Detects Process Injection in svchost.exe
+Step #6	Lacks Network Level Visibility	Flags the unexpected behaviour of svchost.exe, making an outbound connection
+Final Action	May be marked as clean	Generates an alert with the full attack chain and enables the analyst to take actions from within the EDR
