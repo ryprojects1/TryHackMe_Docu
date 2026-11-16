@@ -202,3 +202,24 @@ Files and Folders Modifications
 Threat actors modify different files and folders during data staging, ransomware executions, and malicious file dropping. The EDR tracks this.
 Registry Modifications
 The registry is a goldmine of information about the configurations in a Windows system. There are many registry modifications that occur during a malicious activity, and most of these are monitored by the EDR.
+
+Detection and Response Shield of an EDR.
+Detection
+Based on the telemetry received from the endpoints, some advanced detection techniques are applied to this data. Some of these techniques include:
+
+Behavioral Detection
+Instead of just matching the signatures with known threats, it observes the complete behavior of a file. Advanced threats craft their malware to look clean and use legitimate processes to carry out their attack. EDR catches this behavior.
+Example: A process winword.exe spawning PowerShell.exe will be flagged by the EDR due to the behavior. A Word document spawning a PowerShell is an unusual parent-child relationship.
+Anomaly Detection
+With time, EDR understands the baseline behavior of the endpoints. Any activity that deviates from this behavior will be flagged. During any malicious activity, the endpoint's behavior deviates from normal. EDR picks it up. Sometimes, this can generate false positives as well. However, with the full context it gives, the analyst can identify its legitimacy.
+Example: On one of the endpoints, a process modifies an auto-start registry key, which is not a common behavior on the endpoint.
+IOC matching
+EDRs have some strong threat intelligence field integrations. Except for zero-day attacks, most of the attacks have indicators published in the threat intelligence feeds. EDR flags any activity that matches any known IOC.  Example: A user downloads a file that drops an executable. The executable is often used in a specific attack. The hash of this executable will get matched with the threat intelligence feed and instantly flagged by the EDR.
+MITRE ATT&CK Mapping
+Any activity flagged by the EDR is not only marked as malicious or suspicious but also mapped with the MITRE Tactic and Technique (attack stage) that the particular activity was on. This proves to be very helpful for the analysts.
+Example: If the EDR flags the creation of a scheduled task for any reason, it will likely map this activity to the following:
+Tactic: Persistence
+Technique: Scheduled Task/Job
+Machine Learning Algorithms
+Advanced threat actors try to evade defenses as much as possible, and their activities may sometimes bypass advanced detection techniques. Modern EDRs have machine learning models trained by a large dataset of normal and malicious behaviors. This can detect complex patterns of an attack.
+Example: Attacks in which the individual actions are not inherently malicious, but the ML algorithm identifies the whole chain of activities as malicious. Fileless attacks and multi-staged intrusions are often detected through this.
