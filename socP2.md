@@ -58,3 +58,18 @@ IAM tool to disable the user if there was any successful attempt
 Ticketing system to open and track the incident
 This manual switching between different tools slows down the process. Orchestration solves this problem by coordinating all these tools together inside the SOAR. It connects different tools from various vendors within the unified SOAR interface. It defines workflows for investigating various types of alerts, known as Playbooks. These playbooks are predefined steps that tell the SOAR how to investigate an alert.
 
+2. Automation
+The art of coordinating with multiple tools through predefined actions (Playbooks), which we studied in Orchestration, can be automated. Automation means no more manual clicks needed from SOC analysts. SOAR will itself follow the playbooks. Let's resume the playbook for VPN brute force alert combined with the Automation.
+
+SOAR receives the alert from SIEM
+It automatically queries the SIEM for the user's historical logins
+It automatically verifies the IP's reputation through TI platforms
+If the IP is malicious, it automatically disables the user from the IAM
+Lastly, it automatically opens a ticket in the ticketing system with all the details to initiate an investigation
+This saves a tremendous amount of time for SOC analysts. They can handle hundreds of alerts without burning out.
+
+3. Response
+SOAR gives the ability to take actions using different tools from one unified interface. It also automates the response, as we saw earlier while looking at its Automation capability. For example, SOAR can follow the playbook of VPN Brute force and block the IP on the firewall, disable the user in the IAM, and open a ticket with all the details. 
+
+The Orchestration, Automation, and Response capabilities of SOAR solve the major challenges a SOC team faces. With SOAR, there is no more alert fatigue, most of the processes are automated, and all the different tools are connected for coordination.
+
