@@ -49,3 +49,12 @@ Talent Shortage: SOC teams find recruiting and expanding their talent pool diffi
 What is SOAR?
 Security Orchestration, Automation, and Response (SOAR) is a tool that unifies all the security tools used in a SOC. With SOAR, SOC analysts do not need to switch between SIEM, EDR, Firewall, and other security tools for their investigations. They can operate all these tools within a single SOAR interface. Along with unifying the security tools, it also provides ticketing and case management features to the analysts, through which they can document, track, and resolve their incidents in a structured way.
 
+1. Orchestration
+Traditionally, while investigating an alert, a SOC analyst has to switch between multiple security tools for the analysis. For example, during a VPN brute force, the analyst typically switches between the following tools:
+
+SIEM to check if the user usually uses the subject IP for logging
+Threat Intelligence (TI) platforms to verify the IP's reputation
+IAM tool to disable the user if there was any successful attempt
+Ticketing system to open and track the incident
+This manual switching between different tools slows down the process. Orchestration solves this problem by coordinating all these tools together inside the SOAR. It connects different tools from various vendors within the unified SOAR interface. It defines workflows for investigating various types of alerts, known as Playbooks. These playbooks are predefined steps that tell the SOAR how to investigate an alert.
+
