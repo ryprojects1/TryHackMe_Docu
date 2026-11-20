@@ -73,3 +73,10 @@ SOAR gives the ability to take actions using different tools from one unified in
 
 The Orchestration, Automation, and Response capabilities of SOAR solve the major challenges a SOC team faces. With SOAR, there is no more alert fatigue, most of the processes are automated, and all the different tools are connected for coordination.
 
+Phishing Playbook
+Phishing attacks remain the most common attack vector used in breaches. Unfortunately for security analysts, investigating phishing emails becomes time-consuming and involves manual exercises such as analysing attachments and URLs and verifying through threat intelligence platforms. While other investigations are ongoing, SOAR solutions can execute these tasks in the background via a playbook. Additionally, remediation can be performed when a positive phishing email is identified.
+
+Now, what would this playbook look like? 
+
+Imagine you are a SOC analyst experienced in dealing with phishing alerts. You are training a junior analyst on how to respond to a phishing alert. For this, you make a flow diagram for them to take help from while investigating such alerts. What would you like to add to that flow diagram to assist your junior analyst?  Starting from receiving the alert "Suspicious email received", you will probably tell them the next steps they should take. They should create a ticket and check if the email contains a URL or an attachment. If it does not, just notify the users, but if it does, what would be the next steps? The next steps would further depend on whether it contains a URL or an attachment. So, a lot of "if this happens, do this; else, do this" instructions. This is how a plabook is made. The flow diagram below shows a playbook of phishing, telling what to do at what step.
+
